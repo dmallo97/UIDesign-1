@@ -9,21 +9,25 @@ const CardExample = () => (
       image={logo}
       title="Lizard"
       description="Lizards are widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica"
+      size="M"
     />
     <Card
       image={logo}
       title="Lizard"
       description="Lizards are widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica"
+      size="M"
     />
     <Card
       image={logo}
       title="Lizard"
       description="Lizards are widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica"
+      size="M"
     />
     <Card
       image={logo}
       title="Lizard"
       description="Lizards are widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica"
+      size="M"
     />
   </Container>
 );

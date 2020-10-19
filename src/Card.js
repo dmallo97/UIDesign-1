@@ -2,18 +2,16 @@ import React from "react";
 import styled from "styled-components";
 
 const Card = ({ image, title, size }) => (
-  <Container>
+  <Container src={image}>
     <Image src={image} />
 
     <InfoContainer>
       <Title>{title}</Title>
-      <br />
       <SizeDescription>Talle {size}</SizeDescription>
     </InfoContainer>
 
     <ButtonContainer>
-      <Button>SHARE</Button>
-      <Button>LEARN MORE</Button>
+      <Button>Agregar</Button>
     </ButtonContainer>
   </Container>
 );
@@ -21,13 +19,15 @@ const Card = ({ image, title, size }) => (
 const Container = styled.div`
   width: 100%;
   max-width: 250px;
-  max-height: 250px;
+  ${'' /* max-height: 250px; */}
   box-shadow: 3px 3px 9px 1px rgba(0, 0, 0, 0.3);
   margin: auto;
   border-radius: 10px;
   overflow: hidden;
 
   margin-top: 200px;
+
+  ${'' /*   background-image: ${(props) => props.theme.primary.main}; */}
 `;
 
 const Image = styled.img`
@@ -39,8 +39,11 @@ const Image = styled.img`
 `;
 
 const InfoContainer = styled.div`
-  padding: 17px;
+  padding: 16px;
   background-opacity: 0;
+  justify-content: space-between;
+  align-items: center;
+  display: flex;
 `;
 
 const Title = styled.h1`
