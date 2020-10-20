@@ -3,7 +3,7 @@ import styled from "styled-components";
 import Card from "./Card";
 import logo from "./lizard.jpg";
 
-const CardExample = () => (
+const ProductsCatalog = () => (
   <Container>
     <Card
       image={logo}
@@ -45,4 +45,4 @@ const Container = styled.div`
   }
 `;
 
-export default CardExample;
+export default ProductsCatalog;
