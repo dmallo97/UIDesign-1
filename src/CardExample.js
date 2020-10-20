@@ -1,13 +1,13 @@
 import React from "react";
 import styled from "styled-components";
-import Card from "./Card";
+import Card from "./components/Card";
 import logo from "./lizard.jpg";
 
 const CardExample = () => (
   <Container>
     <Card
       image={logo}
-      title="Lizard"
+      title="Lizard jdjjslkdfslkdfjlsdjflsjksdfsdfsdfsdfasdf sf sfsdf sdfdfsdfs ffsdfsdfasdff"
       description="Lizards are widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica"
       size="M"
       quantity='1'

@@ -1,21 +1,26 @@
 import React from "react";
 import styled from "styled-components";
+import Fab from '@material-ui/core/Fab';
+import AddIcon from '@material-ui/icons/Add';
 
 const Card = ({ image, title, size, quantity }) => (
   <Container src={image}>
     <Image src={image} />
+    <BottomContainer>
 
-    <InfoContainer>
-      <TopDescription>
-        <Title>{title}</Title>
-        <SizeDescription>Talle {size}</SizeDescription>
-      </TopDescription>
-      <Quantity>Cantidad: {quantity}</Quantity>
-    </InfoContainer>
+      <InfoContainer>
+        <TopDescription>
+          <Title>{title}</Title>
+          <SizeDescription>Talle {size}</SizeDescription>
+        </TopDescription>
+        <Quantity>Cantidad: {quantity}</Quantity>
+      </InfoContainer>
 
-    <ButtonContainer>
-      <Button>Agregar</Button>
-    </ButtonContainer>
+      <ButtonContainer>
+        <Fab size="small" ><AddIcon /></Fab>
+      </ButtonContainer>
+
+    </BottomContainer>
   </Container>
 );
 
@@ -24,13 +29,10 @@ const Container = styled.div`
   max-width: 250px;
   min-width: 180px;
   min-height: 220px;
-  ${'' /* max-height: 250px; */}
   box-shadow: 3px 3px 9px 1px rgba(0, 0, 0, 0.3);
   margin: auto;
   border-radius: 10px;
   overflow: hidden;
-
-  ${'' /*   background-image: ${(props) => props.theme.primary.main}; */}
 `;
 
 const Image = styled.img`
@@ -42,19 +44,19 @@ const Image = styled.img`
 `;
 
 const InfoContainer = styled.div`
-  padding: 16px;
   padding-bottom: 0px;
   background-opacity: 0;
   align-content: space-around;
 `;
 
 const TopDescription = styled.div`
+  display: flex;
   justify-content: space-between;
   align-items: center;
-  display: flex;
+  flex-wrap: wrap;
 `;
 
-const Title = styled.h1`
+const Title = styled.h2`
   font-family: "Noto Sans JP", sans-serif;
   font-weight: normal;
   margin: 0px;
@@ -72,20 +74,13 @@ const Quantity = styled.p`
   margin: 0px;
 `;
 
-const ButtonContainer = styled.div`
-  display:flex;
-  justify-content: flex-end;
-  align-items: flex-end;
+const BottomContainer = styled.div`
+  padding: 16px;
 `;
 
-const Button = styled.button`
-  margin: 8px;
-  padding: 8px;
-  background: white;
-  border: 0px;
-  color: rgb(25, 118, 210);
-  font-family: "Noto Sans JP", sans-serif;
-  font-weight: bold;
+const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: flex-end;
 `;
 
 export default Card;
