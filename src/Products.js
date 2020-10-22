@@ -5,7 +5,6 @@ import ProductsCatalog from "./ProductsCatalog";
 
 const Products = () => (
     <div>
-        <Header></Header>
         <ProductsCatalog></ProductsCatalog>
     </div>
 );

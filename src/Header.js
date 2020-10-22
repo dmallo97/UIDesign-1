@@ -7,6 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
+import { Link, useRouteMatch } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -31,9 +32,11 @@ const Header = ({logo, user}) => {
                     <MenuIcon />
                 </IconButton>
                 <Typography variant="h6" className={classes.title}>
-                    Mi Ropa
+                    <Link to="/products">Mi Ropa</Link>
                 </Typography>
-                <Button color="inherit">Login</Button>
+                <Link to="/login">
+                  <Button color="inherit">Login</Button>
+                </Link>
             </Toolbar>
         </AppBar>
     );
