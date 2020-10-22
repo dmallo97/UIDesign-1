@@ -1,13 +1,13 @@
 import React from "react";
-import styled from 'styled-components';
 import Button from '@material-ui/core/Button';
-import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Slider from '@material-ui/core/Slider';
-/* import { StylesProvider } from '@material-ui/styles'; */
+import Container from '@material-ui/core/Container';
+import Avatar from '@material-ui/core/Avatar';
+import PublishIcon from '@material-ui/icons/Publish';
 
 const productSizes = [
     {
@@ -38,34 +38,49 @@ const productSizes = [
 
 const useStyles = makeStyles((theme) => ({
     root: {
+        marginTop: theme.spacing(8),
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        maxWidth: '50%',
-        minWidth: '450px',
-        padding: '24px',
+    },
+    avatar: {
+        margin: theme.spacing(1),
+        backgroundColor: theme.palette.secondary.main,
+    },
+    formContainer: {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        width: '100%'
     },
     textField: {
         padding: '0',
         marginTop: '8px',
         marginBottom: '8px',
-        width: '60%',
+        width: '100%',
         minWidth: '170px',
     },
     donateButton: {
-        width: '30%',
-        marginTop: '24px'
+        width: '50%',
+        marginTop: '32px',
+        minWidth: '150px',
     },
     input: {
         display: 'none',
-        margin: '8px'
+        margin: '8px',
+        minWidth: '150px',
+    },
+    uploadButton: {
+        width: '40%',
+        minWidth: '150px',
     },
     sliderContainer: {
-        width: '60%',
+        width: '100%',
         display: 'flex',
         flexWrap: 'wrap',
-
-        margin: '8px'
+        minWidth: '170px',
+        marginTop: '8px',
+        marginBottom: '8px',
     },
     slider: {
         width: '100%'
@@ -87,88 +102,64 @@ const ProductUpload = () => {
         setSize(event.target.value);
     }
     return (
-        <Paper elevation={3} component="form" className={classes.root}>
-            {/* <StylesProvider injectFirst> */}
-            <TextField className={classes.textField} required id="standard-required" label="Obligatorio" defaultValue="Título" />
+        <Container className={classes.root} component="main" maxWidth="xs">
+            <Avatar className={classes.avatar}>
+                <PublishIcon />
+            </Avatar>
+            <Typography component="h1" variant="h5" align="center">
+                Sube una prenda
+            </Typography>
+            <form className={classes.formContainer} component="form">
+                <TextField className={classes.textField} required id="standard-required" label="Obligatorio" placeholder="Título" />
 
-            <TextField
-                className={classes.textField}
-                id="standard-select-productSize"
-                select
-                label="Tamaño"
-                value={productSize}
-                onChange={handleChange}
-                helperText="Por favor seleccione un tamaño"
-            >
-                {productSizes.map((option) => (
-                    <MenuItem key={option.value} value={option.value}>
-                        {option.label}
-                    </MenuItem>
-                ))}
-            </TextField>
-            <div className={classes.sliderContainer}>
-                <Typography className={classes.typography} id="discrete-slider" gutterBottom>
-                    Cantidad
+                <TextField
+                    className={classes.textField}
+                    id="standard-select-productSize"
+                    select
+                    label="Tamaño"
+                    value={productSize}
+                    onChange={handleChange}
+                    helperText="Por favor seleccione un tamaño"
+                >
+                    {productSizes.map((option) => (
+                        <MenuItem key={option.value} value={option.value}>
+                            {option.label}
+                        </MenuItem>
+                    ))}
+                </TextField>
+
+                <div className={classes.sliderContainer}>
+                    <Typography className={classes.typography} id="discrete-slider" gutterBottom>
+                        Cantidad
                 </Typography>
-                <Slider className={classes.slider}
-                    defaultValue={1}
-                    getAriaValueText={valuetext}
-                    aria-labelledby="discrete-slider"
-                    valueLabelDisplay="auto"
-                    step={1}
-                    marks
-                    min={1}
-                    max={10}
+                    <Slider className={classes.slider}
+                        defaultValue={1}
+                        getAriaValueText={valuetext}
+                        aria-labelledby="discrete-slider"
+                        valueLabelDisplay="auto"
+                        step={1}
+                        marks
+                        min={1}
+                        max={10}
+                    />
+                </div>
+
+                <input
+                    accept="image/*"
+                    className={classes.input}
+                    id="contained-button-file"
+                    type="file"
                 />
-            </div>
-
-            <input
-                accept="image/*"
-                className={classes.input}
-                id="contained-button-file"
-                type="file"
-            />
-            <label htmlFor="contained-button-file">
-                <Button variant="outlined" component="span">
-                    Subir imagen
+                <label htmlFor="contained-button-file">
+                    <Button className={classes.uploadButton} variant="outlined" component="span">
+                        Subir imagen
                 </Button>
-            </label>
+                </label>
 
-            <Button className={classes.donateButton} variant="contained" color="primary">Donar</Button>
-            {/* </StylesProvider> */}
-        </Paper>
+                <Button type="submit" className={classes.donateButton} variant="contained" color="primary">Donar</Button>
+            </form>
+        </Container>
     )
 };
-
-/* const ProductName = styled.input.attrs(props => ({
-    type: "text"
-}))`
-
-`; */
-
-const FormContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    
-    padding: 24px;
-`;
-
-const StyledPaper = styled(Paper)`
-    max-width: 50%;
-    min-width: 450px;
-`;
-
-const StyledTextField = styled(TextField)`
-    padding: 0;
-    margin-top: 8px;
-    margin-bottom: 8px;
-    width: 50%;
-    min-width: 170px;
-`;
-
-const StyledButton = styled(Button)`
-    max-width: 50%;
-    min-width: 170px;
-`;
 
 export default ProductUpload;
