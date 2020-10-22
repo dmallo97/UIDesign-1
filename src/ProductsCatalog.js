@@ -9,21 +9,29 @@ const ProductsCatalog = () => (
       image={logo}
       title="Lizard"
       description="Lizards are widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica"
+      size="M"
+      quantity='1'
     />
     <Card
       image={logo}
       title="Lizard"
       description="Lizards are widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica"
+      size="M"
+      quantity='2'
     />
     <Card
       image={logo}
       title="Lizard"
       description="Lizards are widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica"
+      size="M"
+      quantity='12'
     />
     <Card
       image={logo}
       title="Lizard"
       description="Lizards are widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica"
+      size="M"
+      quantity='9999'
     />
   </Container>
 );

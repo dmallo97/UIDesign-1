@@ -1,19 +1,20 @@
 import React from "react";
 import styled from "styled-components";
 
-const Card = ({ image, title, size }) => (
-  <Container>
+const Card = ({ image, title, size, quantity }) => (
+  <Container src={image}>
     <Image src={image} />
 
     <InfoContainer>
-      <Title>{title}</Title>
-      <br />
-      <SizeDescription>Talle {size}</SizeDescription>
+      <TopDescription>
+        <Title>{title}</Title>
+        <SizeDescription>Talle {size}</SizeDescription>
+      </TopDescription>
+      <Quantity>Cantidad: {quantity}</Quantity>
     </InfoContainer>
 
     <ButtonContainer>
-      <Button>SHARE</Button>
-      <Button>LEARN MORE</Button>
+      <Button>Agregar</Button>
     </ButtonContainer>
   </Container>
 );
@@ -21,13 +22,15 @@ const Card = ({ image, title, size }) => (
 const Container = styled.div`
   width: 100%;
   max-width: 250px;
-  max-height: 250px;
+  min-width: 180px;
+  min-height: 220px;
+  ${'' /* max-height: 250px; */}
   box-shadow: 3px 3px 9px 1px rgba(0, 0, 0, 0.3);
   margin: auto;
   border-radius: 10px;
   overflow: hidden;
 
-  margin-top: 200px;
+  ${'' /*   background-image: ${(props) => props.theme.primary.main}; */}
 `;
 
 const Image = styled.img`
@@ -39,8 +42,16 @@ const Image = styled.img`
 `;
 
 const InfoContainer = styled.div`
-  padding: 17px;
+  padding: 16px;
+  padding-bottom: 0px;
   background-opacity: 0;
+  align-content: space-around;
+`;
+
+const TopDescription = styled.div`
+  justify-content: space-between;
+  align-items: center;
+  display: flex;
 `;
 
 const Title = styled.h1`
@@ -55,9 +66,16 @@ const SizeDescription = styled.p`
   margin: 0px;
 `;
 
+const Quantity = styled.p`
+  font-family: "Noto Sans JP", sans-serif;
+  color: rgb(113, 113, 113);
+  margin: 0px;
+`;
+
 const ButtonContainer = styled.div`
-  justify-content: flex-start;
-  align-items: flex-start;
+  display:flex;
+  justify-content: flex-end;
+  align-items: flex-end;
 `;
 
 const Button = styled.button`
