@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import CardExample from "./CardExample";
+import Products from "./Products";
+import 'fontsource-roboto';
 import SignIn from './SignIn';
 import SignUp from './SignUp';
 
