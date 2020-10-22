@@ -31,12 +31,10 @@ const Header = ({logo, user}) => {
                 <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
                     <MenuIcon />
                 </IconButton>
-                <Typography variant="h6" className={classes.title}>
-                    <Link to="/products">Mi Ropa</Link>
+                <Typography component={Link} to={'/products'} variant="h6" className={classes.title}>
+                  Mi Ropa
                 </Typography>
-                <Link to="/login">
-                  <Button color="inherit">Login</Button>
-                </Link>
+                <Button component={Link} to={'/login'} color="inherit">Login</Button>
             </Toolbar>
         </AppBar>
     );
