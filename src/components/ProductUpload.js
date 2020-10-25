@@ -8,6 +8,8 @@ import Slider from '@material-ui/core/Slider';
 import Container from '@material-ui/core/Container';
 import Avatar from '@material-ui/core/Avatar';
 import PublishIcon from '@material-ui/icons/Publish';
+import MuiAlert from '@material-ui/lab/Alert';
+import Snackbar from '@material-ui/core/Snackbar';
 
 const productSizes = [
     {
@@ -94,13 +96,31 @@ function valuetext(value) {
     return `${value}`;
 }
 
+function Alert(props) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
+
 const ProductUpload = () => {
     const classes = useStyles();
     const [productSize, setSize] = React.useState('M');
+    const [open, setOpen] = React.useState(false);
 
     const handleChange = (event) => {
         setSize(event.target.value);
     }
+
+    const handleClick = () => {
+        setOpen(true);
+    };
+
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setOpen(false);
+    };
+
     return (
         <Container className={classes.root} component="main" maxWidth="xs">
             <Avatar className={classes.avatar}>
@@ -156,8 +176,13 @@ const ProductUpload = () => {
                 </Button>
                 </label>
 
-                <Button type="submit" className={classes.donateButton} variant="contained" color="primary">Donar</Button>
+                <Button type="submit" className={classes.donateButton} variant="contained" color="primary" onClick={handleClick}>Donar</Button>
             </form>
+            <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+                <Alert onClose={handleClose} severity="success">
+                    Prenda subida correctamente!
+                </Alert>
+            </Snackbar>
         </Container>
     )
 };
