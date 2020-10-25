@@ -110,7 +110,15 @@ const ProductUpload = () => {
     }
 
     const handleClick = () => {
-        setOpen(true);
+        try {
+            if (document.forms["uploadForm"]["title"].value !== "") {
+                setOpen(true);
+            } else {
+                return false;
+            }
+        } catch (error) {
+            console.error(error);
+        }
     };
 
     const handleClose = (event, reason) => {
@@ -129,8 +137,8 @@ const ProductUpload = () => {
             <Typography component="h1" variant="h5" align="center">
                 Sube una prenda
             </Typography>
-            <form className={classes.formContainer} component="form">
-                <TextField className={classes.textField} required id="standard-required" label="Obligatorio" placeholder="Título" />
+            <form name="uploadForm" className={classes.formContainer} component="form" onSubmit='return handleClick()'>
+                <TextField name="title" className={classes.textField} required id="standard-required" label="Obligatorio" placeholder="Título" />
 
                 <TextField
                     className={classes.textField}
