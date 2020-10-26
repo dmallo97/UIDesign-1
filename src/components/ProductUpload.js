@@ -137,7 +137,7 @@ const ProductUpload = () => {
             <Typography component="h1" variant="h5" align="center">
                 Sube una prenda
             </Typography>
-            <form name="uploadForm" className={classes.formContainer} component="form" onSubmit='return handleClick()'>
+            <form name="uploadForm" className={classes.formContainer} component="form" onSubmit={handleClick}>
                 <TextField name="title" className={classes.textField} required id="standard-required" label="Obligatorio" placeholder="Título" />
 
                 <TextField
@@ -184,7 +184,7 @@ const ProductUpload = () => {
                 </Button>
                 </label>
 
-                <Button type="submit" className={classes.donateButton} variant="contained" color="primary" onClick={handleClick}>Donar</Button>
+                <Button type="submit" className={classes.donateButton} variant="contained" color="primary">Donar</Button>
             </form>
             <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
                 <Alert onClose={handleClose} severity="success">
