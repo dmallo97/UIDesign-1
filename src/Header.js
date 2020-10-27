@@ -22,9 +22,14 @@ const useStyles = makeStyles((theme) => ({
     textDecoration: 'none',
     color: 'white'
   },
-  avatar: {
+  link: {
     textDecoration: 'none',
-    marginRight: theme.spacing(2),
+    color: 'white',
+    padding: theme.spacing(1),
+    marginLeft: theme.spacing(1)
+  },
+  avatar: {
+    padding: theme.spacing(1),
   }
 }));
 
@@ -46,8 +51,8 @@ const Header = ({ user, setUser }) => {
         </IconButton>
         <Typography component={Link} to={'/products'} variant="h6" className={classes.title}>
           Mi Ropa
-                </Typography>
-        {user ? <Avatar className={classes.avatar} component={Link} to={'/account'} src={user.avatar}>CS</Avatar> : <Button component={Link} to={'/login'} color="inherit">Ingresar</Button>}
+        </Typography>
+        {user ? <Avatar variant="rounded" className={classes.avatar} component={Link} to={'/account'} src={user.avatar}>CS</Avatar> : <Button component={Link} to={'/login'} color="inherit">Ingresar</Button>}
         {user ? <Button onClick={handleClick} color="inherit">Salir</Button> : <></>}
         {user ? <Link className={classes.link} to={'/myCart'}>
           <ShoppingCartIcon />
