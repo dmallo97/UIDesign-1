@@ -1,5 +1,7 @@
 import React from 'react';
 import MUIDataTable, { ExpandButton } from "mui-datatables";
+import { makeStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
 import styled from "styled-components";
 import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
@@ -77,15 +79,32 @@ const options = {
  */
 };
 
-const myCart = () => {
+const useStyles = makeStyles((theme) => ({
+    button: {
+        margin: '8px',
+    },
+    container: {
+        display: 'flex',
+        justifyContent: 'flex-end'
+    }
+}));
+
+const MyCart = () => {
+    const classes = useStyles();
+
     return (
-        <MUIDataTable
-            title={"Mis prendas"}
-            data={data}
-            columns={columns}
-            options={options}
-        /> /* components={components} */
+        <>
+            <MUIDataTable
+                title={"Mis prendas"}
+                data={data}
+                columns={columns}
+                options={options}
+            /> {/* components={components} */}
+            <div className={classes.container}>
+                <Button className={classes.button} variant="contained" color="primary">Recibir</Button>
+            </div>
+        </>
     )
 };
 
-export default myCart;
+export default MyCart;
