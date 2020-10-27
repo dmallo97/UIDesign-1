@@ -8,6 +8,7 @@ import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import { Link, useRouteMatch } from "react-router-dom";
+import Avatar from '@material-ui/core/Avatar';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -23,8 +24,20 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-const Header = ({logo, user}) => {
+const Header = ({user}) => {
     const classes = useStyles();
+    let userDisplay;
+
+    React.useEffect(() => {
+      if(user)
+      {
+        userDisplay = <Avatar>CS</Avatar>;
+      }
+      else {
+        userDisplay = <Button component={Link} to={'/login'} color="inherit">Ingresar</Button>;
+      }
+    }, user);
+    
     return (
         <AppBar position="static">
             <Toolbar>
@@ -34,7 +47,8 @@ const Header = ({logo, user}) => {
                 <Typography component={Link} to={'/products'} variant="h6" className={classes.title}>
                   Mi Ropa
                 </Typography>
-                <Button component={Link} to={'/login'} color="inherit">Login</Button>
+                <Button component={Link} to={'/account'} color="inherit">Mi cuenta. Prueba.</Button>
+                {userDisplay}
             </Toolbar>
         </AppBar>
     );
