@@ -1,0 +1,91 @@
+import React from 'react';
+import MUIDataTable, { ExpandButton } from "mui-datatables";
+import styled from "styled-components";
+import TableRow from "@material-ui/core/TableRow";
+import TableCell from "@material-ui/core/TableCell";
+import logo from "../lizard.jpg";
+
+const columns = [
+    {
+        name: 'title',
+        label: 'Título',
+        options: {
+            filter: false,
+            sort: true,
+        }
+    },
+    {
+        name: 'size',
+        label: 'Talle',
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: 'quantity',
+        label: 'Cantidad',
+        options: {
+            filter: false,
+            sort: true,
+        }
+    },
+];
+
+const data = [
+    { title: 'Buzo manga larga', size: 'M', quantity: '2', src: logo },
+    { title: 'Short rojo', size: 'L', quantity: '1', src: logo },
+    { title: 'Pantalon', size: 'XL', quantity: '3', src: logo },
+];
+
+/* const components = {
+    ExpandButton: function (props) {
+        if (props.dataIndex === 3 || props.dataIndex === 4) return <div style={{ width: '24px' }} />;
+        return <ExpandButton {...props} />;
+    }
+}; */
+
+const options = {
+    /* filterType: "dropdown", */
+    filterType: "checkbox",
+    download: "false",
+    print: "false",
+    viewColumns: "false",
+    responsive: "simple",
+
+    /* expandableRows: true,
+    expandableRowsHeader: false,
+    expandableRowsOnClick: true,
+    isRowExpandable: (dataIndex, expandedRows) => {
+        if (dataIndex === 3 || dataIndex === 4) return false;
+
+        // Prevent expand/collapse of any row if there are 4 rows expanded already (but allow those already expanded to be collapsed)
+        if (expandedRows.data.length > 4 && expandedRows.data.filter(d => d.dataIndex === dataIndex).length === 0) return false;
+        return true;
+    },
+    renderExpandableRow: (rowData, rowMeta) => {
+        const colSpan = rowData.length + 1;
+        return (
+            <TableRow>
+                <TableCell colSpan={colSpan}>
+                    Custom expandable row option. Data: {JSON.stringify(rowData)}{rowData.title}
+                </TableCell>
+            </TableRow>
+        );
+    },
+    onRowExpansionChange: (curExpanded, allExpanded, rowsExpanded) => console.log(curExpanded, allExpanded, rowsExpanded)
+ */
+};
+
+const myCart = () => {
+    return (
+        <MUIDataTable
+            title={"Mis prendas"}
+            data={data}
+            columns={columns}
+            options={options}
+        /> /* components={components} */
+    )
+};
+
+export default myCart;
