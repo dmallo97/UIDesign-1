@@ -17,7 +17,7 @@ const Account = ({user, setUser}) => {
             md={6}
             xs={12}
             >
-            <Profile user={user, setUser}/>
+            <Profile user={user} setUser={setUser}/>
             </Grid>
             <Grid
             item
@@ -25,7 +25,7 @@ const Account = ({user, setUser}) => {
             md={6}
             xs={12}
             >
-            <ProfileDetails user={user, setUser}/>
+            <ProfileDetails user={user} setUser={setUser}/>
             </Grid>
         </Grid>
     </Container>

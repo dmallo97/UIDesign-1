@@ -29,19 +29,19 @@ const Profile = ({ user, setUser }) => {
           display="flex"
           flexDirection="column"
         >
-          <Avatar className={classes.avatar}>CS</Avatar>
+          <Avatar className={classes.avatar} src={user.avatar}>CS</Avatar>
           <Typography
             color="textPrimary"
             gutterBottom
             variant="h3"
           >
-            {user.name}
+            {`${user.firstName} ${user.lastName}`}
           </Typography>
           <Typography
             color="textSecondary"
             variant="body1"
           >
-            {`${user.firstName} ${user.country}`}
+            {`${user.city}, ${user.country}`}
           </Typography>
         </Box>
       </CardContent>

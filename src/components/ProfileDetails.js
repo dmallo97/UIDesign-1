@@ -42,10 +42,17 @@ const ProfileDetails = ({ user, setUser }) => {
     });
   };
 
+  const handleClick = (event) => {
+    setUser({
+      ...values,
+    })
+  }
+
   return (
     <form
       autoComplete="off"
       noValidate
+      onSubmit={handleClick}
     >
       <Card>
         <CardHeader
@@ -113,9 +120,12 @@ const ProfileDetails = ({ user, setUser }) => {
                 label="C.I"
                 name="ci"
                 onChange={handleChange}
-                type="number"
                 value={values.ci}
-                variant="disabled"
+                /*InputProps={{
+                  readOnly: true
+                }}*/
+                disabled
+                variant='outlined'
               />
             </Grid>
             <Grid
@@ -170,6 +180,7 @@ const ProfileDetails = ({ user, setUser }) => {
           <Button
             color="primary"
             variant="contained"
+            type="submit"
           >
             Guardar datos
           </Button>

@@ -1,5 +1,4 @@
 import React from "react";
-import styled from "styled-components";
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -7,7 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
-import { Link, useRouteMatch } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import Avatar from '@material-ui/core/Avatar';
 
 const useStyles = makeStyles((theme) => ({
@@ -20,23 +19,21 @@ const useStyles = makeStyles((theme) => ({
     title: {
       flexGrow: 1,
     },
+    avatar: {
+      textDecoration: 'none',
+      marginRight: theme.spacing(2),
+    }
   }));
 
 
 
-const Header = ({user}) => {
+const Header = ({user, setUser}) => {
     const classes = useStyles();
-    let userDisplay;
-
-    React.useEffect(() => {
-      if(user)
-      {
-        userDisplay = <Avatar>CS</Avatar>;
-      }
-      else {
-        userDisplay = <Button component={Link} to={'/login'} color="inherit">Ingresar</Button>;
-      }
-    }, user);
+    const history = useHistory();
+    const handleClick = () => {
+      setUser(null);
+      history.push('/login');
+    }
     
     return (
         <AppBar position="static">
@@ -47,8 +44,8 @@ const Header = ({user}) => {
                 <Typography component={Link} to={'/products'} variant="h6" className={classes.title}>
                   Mi Ropa
                 </Typography>
-                <Button component={Link} to={'/account'} color="inherit">Mi cuenta. Prueba.</Button>
-                {userDisplay}
+                {user ? <Avatar className={classes.avatar} component={Link} to={'/account'} src={user.avatar}>CS</Avatar> : <Button component={Link} to={'/login'} color="inherit">Ingresar</Button>}
+                {user ? <Button onClick={handleClick} color="inherit">Salir</Button> : <></>}
             </Toolbar>
         </AppBar>
     );
