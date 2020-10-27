@@ -1,8 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import CardExample from "./CardExample";
-
-const App = () => <CardExample />;
+import 'fontsource-roboto';
+import App from './App';
 
 ReactDOM.render(<App />, document.getElementById('root'));
 
