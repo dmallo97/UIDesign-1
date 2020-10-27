@@ -5,21 +5,25 @@ import Header from './Header';
 import SignIn from './SignIn';
 import SignUp from './SignUp';
 import Products from './Products';
+import MyCart from './components/MyCart';
 
 function App() {
   const [user, setUser] = React.useState();
 
   return (
     <Router>
-      <Header/>
+      <Header />
       <Route path="/login">
-        <SignIn/>
+        <SignIn />
       </Route>
       <Route path="/signup">
-        <SignUp/>
+        <SignUp />
       </Route>
       <Route path="/products">
-        <Products/>
+        <Products />
+      </Route>
+      <Route path="/myCart">
+        <MyCart />
       </Route>
     </Router>
   );

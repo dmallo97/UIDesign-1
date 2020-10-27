@@ -41,7 +41,10 @@ const Container = styled.div`
   padding: 24px;
   column-gap: 24px;
   row-gap: 32px;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  @media (max-width: 2000px) {
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  }
   @media (max-width: 1000px) {
     grid-template-columns: 1fr 1fr 1fr;
   }

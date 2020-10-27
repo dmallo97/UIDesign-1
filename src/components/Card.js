@@ -60,6 +60,10 @@ const Title = styled.h2`
   font-family: "Noto Sans JP", sans-serif;
   font-weight: normal;
   margin: 0px;
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 const SizeDescription = styled.p`

@@ -3,8 +3,9 @@ import ReactDOM from 'react-dom';
 import 'fontsource-roboto';
 import ProductUploadExample from "./ProductUploadExample";
 import MyCartExample from './MyCartExample';
-
-const App = () => <MyCartExample />;
+import ProductsCatalog from './ProductsCatalog';
+import Header from './Header';
+import App from './App';
 
 ReactDOM.render(<App />, document.getElementById('root'));
 
