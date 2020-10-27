@@ -109,13 +109,15 @@ const ProductUpload = () => {
         setSize(event.target.value);
     }
 
-    const handleClick = () => {
+    const handleClick = (event) => {
         try {
             if (document.forms["uploadForm"]["title"].value !== "") {
                 setOpen(true);
             } else {
                 return false;
             }
+            event.preventDefault();
+            event.stopPropagation();
         } catch (error) {
             console.error(error);
         }

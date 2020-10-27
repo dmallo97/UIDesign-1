@@ -8,6 +8,7 @@ import Products from './Products';
 import MyCart from './components/MyCart';
 import Account from './components/Account';
 import styled from 'styled-components';
+import ProductUpload from './components/ProductUpload';
 
 function App() {
   const [user, setUser] = React.useState();
@@ -27,6 +28,9 @@ function App() {
         </Route>
         <Route path="/myCart">
           <MyCart />
+        </Route>
+        <Route path="/productUpload">
+          <ProductUpload />
         </Route>
         <PrivateRoute user={user} path="/account">
           <Account user={user} setUser={setUser} />
