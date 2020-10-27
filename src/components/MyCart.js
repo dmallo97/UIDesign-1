@@ -1,10 +1,7 @@
 import React from 'react';
-import MUIDataTable, { ExpandButton } from "mui-datatables";
+import MUIDataTable from "mui-datatables";
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
-import styled from "styled-components";
-import TableRow from "@material-ui/core/TableRow";
-import TableCell from "@material-ui/core/TableCell";
 import logo from "../lizard.jpg";
 
 const columns = [
