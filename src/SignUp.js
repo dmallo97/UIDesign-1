@@ -31,6 +31,21 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const cities = [
+  {
+    value: 'montevideo',
+    label: 'Montevideo'
+  },
+  {
+    value: 'las-piedras',
+    label: 'Las Piedras'
+  },
+  {
+    value: 'ciudad-de-la-costa',
+    label: 'Ciudad de la Costa'
+  }
+];
+
 export default function SignUp() {
   const classes = useStyles();
 
@@ -90,6 +105,47 @@ export default function SignUp() {
                 type="password"
                 id="password"
                 autoComplete="current-password"
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                name="ci"
+                label="Cédula de identidad"
+                id="ci"
+                autoComplete="current-ci"
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                fullWidth
+                label="Seleccione una ciudad"
+                name="city"
+                required
+                select
+                SelectProps={{ native: true }}
+                variant="outlined"
+              >
+                {cities.map((option) => (
+                  <option
+                    key={option.value}
+                    value={option.value}
+                  >
+                    {option.label}
+                  </option>
+                ))}
+              </TextField>
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                fullWidth
+                label="País"
+                name="country"
+                disabled
+                variant="outlined"
+                value="Uruguay"
               />
             </Grid>
           </Grid>
