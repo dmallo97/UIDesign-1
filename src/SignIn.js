@@ -11,7 +11,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import { Link, useRouteMatch } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -33,8 +33,34 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SignIn() {
+const user = {
+  firstName: 'Cholo',
+  lastName: 'Simeone',
+  avatar: 'https://i0.wp.com/thesefootballtimes.co/wp-content/uploads/2018/10/simeone.png?fit=1781%2C1289&ssl=1',
+  city: 'Montevideo',
+  country: 'Uruguay',
+  email: 'cholo@simeone.com',
+  ci: '5.112.546-3',
+  password: '1234'
+};
+
+export default function SignIn({setUser}) {
   const classes = useStyles();
+  const history = useHistory();
+  const [values, setValues] = React.useState({
+    email: 'cholo@simeone.com',
+    password: '1234'
+  });
+
+  const handleClick = (event) => {
+    event.preventDefault();
+    event.stopPropagation();  
+    if(user.email === values.email && values.password  === user.password)
+    {
+      setUser(user);
+      history.push('/account');
+    } 
+  }
 
   return (
     <Container component="main" maxWidth="xs">
@@ -46,7 +72,7 @@ export default function SignIn() {
         <Typography component="h1" variant="h5">
           Ingresa a tu cuenta
         </Typography>
-        <form className={classes.form} noValidate>
+        <form name='login-form' onSubmit={handleClick} className={classes.form} noValidate>
           <TextField
             variant="outlined"
             margin="normal"
@@ -56,6 +82,13 @@ export default function SignIn() {
             label="Correo electrónico"
             name="email"
             autoComplete="email"
+            value={values.email}
+            onChange={event =>
+              setValues({
+                ...values,
+                email: event.target.value
+              })
+            }
             autoFocus
           />
           <TextField
@@ -67,6 +100,13 @@ export default function SignIn() {
             label="Contraseña"
             type="password"
             id="password"
+            onChange={event =>
+              setValues({
+                ...values,
+                password: event.target.value
+              })
+            }
+            value={values.password}
             autoComplete="current-password"
           />
           <FormControlLabel
