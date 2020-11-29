@@ -23,6 +23,11 @@ const typeDefs = gql`
         productImage: String
     }
 
+    type ShoppingCart {
+        userId: ID!
+        products: [Product]
+    }
+
     type Query {
         products: [Product]!
         product(id: ID!): Product
