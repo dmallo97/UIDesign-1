@@ -1,34 +1,24 @@
 /* const jwt = require("jsonwebtoken");
 const TOKEN_SECRET = "secrettoken"; */
 const Bcrypt = require("bcrypt");
-const { User } = require("./models");
+const { User, Product } = require("./models");
 const { generateToken } = require("./auth");
 
-const userResolver = (root, args, ctx, info) => {
-    return ctx.user;
+const userResolver = async (root, args, ctx, info) => {
+    const userId = ctx.user._id;
+    const user = await User.findById(userId);
+    return user;
 }
 
-const productResolver = (root, args, ctx, info) => {
-    return ctx.product;
+const productResolver = async (root, { id }, ctx, info) => {
+    const product = await Product.findById(id);
+    return product;
 }
 
-const productsResolver = (root, args, ctx, info) => {
-    return ctx.products;
+const productsResolver = async (root, args, ctx, info) => {
+    const products = await Product.find();
+    return products;
 }
-
-/* const signInResolver = (root, { input: { username, password } }, ctx, info) => {
-    if (username === "cholo" && password === "1234") {
-        const user = {
-            id: 1,
-            username
-        };
-        const token = jwt.sign(user, TOKEN_SECRET);
-        return {
-            ...user,
-            token
-        };
-    }
-}; */
 
 const signInResolver = async (
     root,
@@ -44,7 +34,7 @@ const signInResolver = async (
 
 const signUpResolver = async (
     root,
-    { input: { username, password, email, name } },
+    { input: { username, password, email, name, dni } },
     ctx,
     info
 ) => {
@@ -56,7 +46,8 @@ const signUpResolver = async (
         username,
         password: Bcrypt.hashSync(password, 10),
         email,
-        name
+        name,
+        dni
     });
     await user.save();
     return user.toJSON();
@@ -70,11 +61,11 @@ export const resolvers = {
     },
     Mutation: {
         signIn: signInResolver,
-        /* signUp: signUpResolver */
+        signUp: signUpResolver
     },
     User: {
         id: user => user._id,
-        /* token: (user, args, ctx, info) => {
+        token: (user, args, ctx, info) => {
             const token = generateToken(user);
 
             // ctx.cookie("token", token, {
@@ -83,7 +74,7 @@ export const resolvers = {
             //   sameSite: "None"
             // });
             return token;
-        }, 
+        }, /*
         favorites: async user => {
             // Return favorite pokemons
             // const favorites = await PokemonFavorites.find({ userId: user.id });
