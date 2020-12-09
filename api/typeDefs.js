@@ -20,7 +20,7 @@ const typeDefs = gql`
         id: ID!
         title: String
         size: String
-        quantity: String
+        quantity: Number
         productImage: String
     }
 
@@ -42,7 +42,6 @@ const typeDefs = gql`
         name: String
         lastname: String
         email: String
-        dni: String!
         country: String
         city: String
         profileImage: String
@@ -56,11 +55,9 @@ const typeDefs = gql`
     type Mutation {
         #uploadProduct(productID: ID!): Product
         #addProductToCart(productID: ID!, userID: ID!): User!
-        #updateUser(input: UserInput!): User!
-        #createUser(input: UserInput!): User!
+        updateUser(input: UserInput!): User!
         signIn(input: SignInInput!): User!
         signUp(input: UserInput!): User!
-        #login(input: SignInInput!): User! 
     }
 `;
 
