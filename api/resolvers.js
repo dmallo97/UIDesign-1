@@ -56,6 +56,26 @@ const signUpResolver = async (
     return user.toJSON();
 };
 
+const uploadProductResolver = async(
+    root,
+    { input: { title, size, quantity, productImage }},
+    ctx,
+    info 
+) => {
+    if(title.length == 0)
+    {
+        throw new Error("Debe ingresar un título.");
+    }
+    const newProduct = new Product({
+        title,
+        size,
+        quantity,
+        productImage
+    });
+    await newProduct.save();
+    return newProduct.toJSON();
+}
+
 const updateUser = async (
     { input: { username, password, firstname, lastname, email, dni, country, city } }, //falta profileImage
     root,
@@ -86,6 +106,7 @@ export const resolvers = {
     Mutation: {
         signIn: signInResolver,
         signUp: signUpResolver,
+        uploadProduct: uploadProductResolver,
         updateUser: updateUser
     },
     User: {
