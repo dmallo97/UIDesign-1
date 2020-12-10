@@ -178,12 +178,15 @@ const processOrderResolver = async (root, args, ctx, info) => {
     const shoppingCart = await ShoppingCart.findOne({ userId });
     shoppingCart.productIds.forEach(async (productIdOrdered) => {
         const product = Product.findById(productIdOrdered);
-        if (product.quantity === 1) {
-            await product.remove();
-        }
-        else {
-            product.quantity--;
-            await product.save();
+        if(product)
+        {
+            if (product.quantity === 1) {
+                await product.remove();
+            }
+            else {
+                product.quantity--;
+                await product.save();
+            }
         }
     });
     shoppingCart.productIds = [];
