@@ -11,7 +11,7 @@ mongoose.connect(MONGO_CONNECTION_STRING, {
 const Product = mongoose.model("Product", {
     title: String,
     size: String,
-    quantity: String,
+    quantity: Number,
     productImage: String,
     userId: mongoose.Schema.Types.ObjectId
 });
@@ -19,7 +19,7 @@ const Product = mongoose.model("Product", {
 const User = mongoose.model("User", {
     username: String,
     password: String,
-    name: String,
+    firstname: String,
     lastname: String,
     email: String,
     dni: String,

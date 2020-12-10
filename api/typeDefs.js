@@ -6,7 +6,7 @@ const typeDefs = gql`
         token: String!
         username: String!
         password: String!
-        name: String
+        firstname: String
         lastname: String
         email: String
         dni: String!
@@ -21,6 +21,10 @@ const typeDefs = gql`
         size: String!
         quantity: Int!
         productImage: String
+    }
+
+    input RemoveProductInput {
+        productId: ID!
     }
 
     type Product {
@@ -40,13 +44,13 @@ const typeDefs = gql`
         products: [Product]!
         product(id: ID!): Product
         user: User
+        shoppingCart: ShoppingCart
     }
 
     input UserInput {
-        id: ID
-        username: String!
-        password: String!
-        name: String
+        username: String
+        password: String
+        firstname: String
         lastname: String
         email: String
         country: String
@@ -66,10 +70,13 @@ const typeDefs = gql`
 
     type Mutation {
         uploadProduct(input: UploadProductInput!): Product!
+        removeProduct(input: RemoveProductInput!): Product!
         addProductToCart(input: CartInput!): ShoppingCart!
+        removeProductFromCart(input: CartInput!): ShoppingCart!
         updateUser(input: UserInput!): User!
         signIn(input: SignInInput!): User!
         signUp(input: UserInput!): User!
+        processOrder: ShoppingCart!
     }
 `;
 

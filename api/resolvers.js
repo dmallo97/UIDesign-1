@@ -20,6 +20,12 @@ const productsResolver = async (root, args, ctx, info) => {
     return products;
 }
 
+const shoppingCartResolver = async (root, args, ctx, info) => {
+    const userId = ctx.user._id;
+    const shoppingCart = await ShoppingCart.findOne({ userId });
+    return shoppingCart;
+}
+
 const signInResolver = async (
     root,
     { input: { username, password } },
@@ -33,8 +39,8 @@ const signInResolver = async (
 };
 
 const signUpResolver = async (
-    { input: { username, password, firstname, lastname, email, dni, country, city } }, //falta agregar imagen, si no sabemos la pelamos
     root,
+    { input: { username, password, firstname, lastname, email, dni, country, city } }, //falta agregar imagen, si no sabemos la pelamos
     ctx,
     info
 ) => {
@@ -73,22 +79,34 @@ const uploadProductResolver = async (
     });
     await newProduct.save();
     return newProduct.toJSON();
-}
+};
 
-const updateUserResolver = async (
-    { input: { username, password, firstname, lastname, email, dni, country, city } }, //falta profileImage
+const removeProductResolver = async (
     root,
+    { input: { productId } },
     ctx,
     info
 ) => {
-    const user = ctx.user;
+    const product = await Product.findById(productId);
+
+    await product.remove();
+    return product.toJSON();
+};
+
+const updateUserResolver = async (
+    root,
+    { input: { username, password, firstname, lastname, email, country, city } }, //falta profileImage
+    ctx,
+    info
+) => {
+    const userId = ctx.user._id;
+    const user = await User.findById(userId);
 
     user.username = username;
-    user.password = password;
+    user.password = Bcrypt.hashSync(password, 10);
     user.firstname = firstname;
     user.lastname = lastname;
     user.email = email;
-    user.dni = dni;
     user.country = country;
     user.city = city;
 
@@ -97,21 +115,71 @@ const updateUserResolver = async (
 };
 
 const addProductToCartResolver = async (
+    root,
     {
         input: {
             productId,
             userId
         } },
-    root,
     ctx,
     info
 ) => {
     //const user = ctx.user;
 
-    const shoppingCart = await ShoppingCart.findOne(userId);
-    const product = Product.findById(productId);
+    let shoppingCart = await ShoppingCart.findOne({ userId });
+    if (!shoppingCart) {
+        shoppingCart = new ShoppingCart();
+        shoppingCart.userId = userId;
+        shoppingCart.productIds = [];
+    }
 
-    await shoppingCart.products.push(product);
+    const product = await Product.findById(productId);
+
+    await shoppingCart.productIds.push(product._id);
+    console.log(shoppingCart);
+    await shoppingCart.save();
+    return shoppingCart.toJSON();
+};
+
+
+const removeProductFromCartResolver = async (
+    root,
+    {
+        input: {
+            productId,
+            userId
+        } },
+    ctx,
+    info
+) => {
+    //const user = ctx.user;
+
+    let shoppingCart = await ShoppingCart.findOne({ userId });
+
+    const index = shoppingCart.productIds.indexOf(productId);
+    if (index > -1) {
+        await shoppingCart.productIds.splice(index, 1);
+    }
+
+    await shoppingCart.save();
+    return shoppingCart.toJSON();
+};
+
+const processOrderResolver = async (root, args, ctx, info) => {
+    const userId = ctx.user._id;
+    const shoppingCart = await ShoppingCart.findOne({ userId });
+    shoppingCart.productIds.forEach(async (productIdOrdered) => {
+        const product = Product.findById(productIdOrdered);
+        if (product.quantity === 1) {
+            await product.remove();
+        }
+        else {
+            product.quantity--;
+            await product.save();
+        }
+    });
+    shoppingCart.productIds = [];
+    await shoppingCart.save();
     return shoppingCart.toJSON();
 };
 
@@ -119,14 +187,18 @@ export const resolvers = {
     Query: {
         products: productsResolver,
         product: productResolver,
-        user: userResolver
+        user: userResolver,
+        shoppingCart: shoppingCartResolver
     },
     Mutation: {
         signIn: signInResolver,
         signUp: signUpResolver,
         addProductToCart: addProductToCartResolver,
+        removeProductFromCart: removeProductFromCartResolver,
         uploadProduct: uploadProductResolver,
-        updateUser: updateUserResolver
+        removeProduct: removeProductResolver,
+        updateUser: updateUserResolver,
+        processOrder: processOrderResolver
     },
     User: {
         id: user => user._id,
@@ -152,5 +224,15 @@ export const resolvers = {
     },
     Product: {
         id: product => product._id
+    },
+    ShoppingCart: {
+        products: async shoppingCart => {
+            let products = [];
+            shoppingCart.productIds.forEach(async (productId) => {
+                const product = Product.findById(productId);
+                products.push(product);
+            });
+            return products;
+        }
     }
 };
