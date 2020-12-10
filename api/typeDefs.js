@@ -20,7 +20,7 @@ const typeDefs = gql`
         id: ID!
         title: String
         size: String
-        quantity: Number
+        quantity: Int
         productImage: String
     }
 
