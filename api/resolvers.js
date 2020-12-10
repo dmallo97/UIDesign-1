@@ -135,9 +135,17 @@ const addProductToCartResolver = async (
 
     const product = await Product.findById(productId);
 
-    await shoppingCart.productIds.push(product._id);
-    console.log(shoppingCart);
-    await shoppingCart.save();
+    let productAlreadyExists = false;
+    shoppingCart.productIds.forEach(async (productId) => {
+        if (product._id === productId) {
+            productAlreadyExists = true;
+        }
+    });
+    if (!productAlreadyExists) {
+        await shoppingCart.productIds.push(product._id);
+        await shoppingCart.save();
+    }
+
     return shoppingCart.toJSON();
 };
 
