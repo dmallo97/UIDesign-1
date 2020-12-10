@@ -59,9 +59,14 @@ const typeDefs = gql`
         password: String!
     }
 
+    input CartInput {
+        productId: ID!
+        userId: ID!
+    }
+
     type Mutation {
-        uploadProduct(input: UploadProductInput!): Product
-        #addProductToCart(productID: ID!, userID: ID!): User!
+        uploadProduct(input: UploadProductInput!): Product!
+        addProductToCart(input: CartInput!): ShoppingCart!
         updateUser(input: UserInput!): User!
         signIn(input: SignInInput!): User!
         signUp(input: UserInput!): User!

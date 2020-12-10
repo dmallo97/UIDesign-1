@@ -1,7 +1,7 @@
 /* const jwt = require("jsonwebtoken");
 const TOKEN_SECRET = "secrettoken"; */
 const Bcrypt = require("bcrypt");
-const { User, Product } = require("./models");
+const { User, Product, ShoppingCart } = require("./models");
 const { generateToken } = require("./auth");
 
 const userResolver = async (root, args, ctx, info) => {
@@ -56,14 +56,13 @@ const signUpResolver = async (
     return user.toJSON();
 };
 
-const uploadProductResolver = async(
+const uploadProductResolver = async (
     root,
-    { input: { title, size, quantity, productImage }},
+    { input: { title, size, quantity, productImage } },
     ctx,
-    info 
+    info
 ) => {
-    if(title.length == 0)
-    {
+    if (title.length === 0) {
         throw new Error("Debe ingresar un título.");
     }
     const newProduct = new Product({
@@ -76,7 +75,7 @@ const uploadProductResolver = async(
     return newProduct.toJSON();
 }
 
-const updateUser = async (
+const updateUserResolver = async (
     { input: { username, password, firstname, lastname, email, dni, country, city } }, //falta profileImage
     root,
     ctx,
@@ -97,6 +96,25 @@ const updateUser = async (
     return user.toJSON();
 };
 
+const addProductToCartResolver = async (
+    {
+        input: {
+            productId,
+            userId
+        } },
+    root,
+    ctx,
+    info
+) => {
+    //const user = ctx.user;
+
+    const shoppingCart = await ShoppingCart.findOne(userId);
+    const product = Product.findById(productId);
+
+    await shoppingCart.products.push(product);
+    return shoppingCart.toJSON();
+};
+
 export const resolvers = {
     Query: {
         products: productsResolver,
@@ -106,8 +124,9 @@ export const resolvers = {
     Mutation: {
         signIn: signInResolver,
         signUp: signUpResolver,
+        addProductToCart: addProductToCartResolver,
         uploadProduct: uploadProductResolver,
-        updateUser: updateUser
+        updateUser: updateUserResolver
     },
     User: {
         id: user => user._id,
@@ -120,14 +139,18 @@ export const resolvers = {
             //   sameSite: "None"
             // });
             return token;
-        }, /*
-        favorites: async user => {
-            // Return favorite pokemons
-            // const favorites = await PokemonFavorites.find({ userId: user.id });
-            // const pokemons = await fetchPokemons();
-            // return pokemons.filter(x => favorites.includes(x.id));
-            return [];
-        } */
+        }
+
+        /*
+           favorites: async user => {
+               // Return favorite pokemons
+               // const favorites = await PokemonFavorites.find({ userId: user.id });
+               // const pokemons = await fetchPokemons();
+               // return pokemons.filter(x => favorites.includes(x.id));
+               return [];
+           } */
+    },
+    Product: {
+        id: product => product._id
     }
 };
-
