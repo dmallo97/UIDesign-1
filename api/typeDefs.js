@@ -16,11 +16,18 @@ const typeDefs = gql`
         products: [Product]
     }
 
+    input UploadProductInput{
+        title: String!
+        size: String!
+        quantity: Int!
+        productImage: String
+    }
+
     type Product {
         id: ID!
         title: String
         size: String
-        quantity: String
+        quantity: Int
         productImage: String
     }
 
@@ -54,7 +61,7 @@ const typeDefs = gql`
     }
 
     type Mutation {
-        #uploadProduct(productID: ID!): Product
+        uploadProduct(input: UploadProductInput!): Product
         #addProductToCart(productID: ID!, userID: ID!): User!
         #updateUser(input: UserInput!): User!
         #createUser(input: UserInput!): User!

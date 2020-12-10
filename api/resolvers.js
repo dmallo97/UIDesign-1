@@ -53,6 +53,26 @@ const signUpResolver = async (
     return user.toJSON();
 };
 
+const uploadProductResolver = async(
+    root,
+    { input: { title, size, quantity, productImage }},
+    ctx,
+    info 
+) => {
+    if(title.length == 0)
+    {
+        throw new Error("Debe ingresar un título.");
+    }
+    const newProduct = new Product({
+        title,
+        size,
+        quantity,
+        productImage
+    });
+    await newProduct.save();
+    return newProduct.toJSON();
+};
+
 export const resolvers = {
     Query: {
         products: productsResolver,
@@ -61,7 +81,8 @@ export const resolvers = {
     },
     Mutation: {
         signIn: signInResolver,
-        signUp: signUpResolver
+        signUp: signUpResolver,
+        uploadProduct: uploadProductResolver,
     },
     User: {
         id: user => user._id,
