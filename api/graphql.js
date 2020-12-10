@@ -64,7 +64,7 @@ const server = new ApolloServer({
         user
       };
     } catch (error) {
-      console.log("Falta token", error);
+      console.log("Un token es requerido. Error: ", error);
     }
     return {};
   }

@@ -49,7 +49,6 @@ const typeDefs = gql`
         name: String
         lastname: String
         email: String
-        dni: String!
         country: String
         city: String
         profileImage: String
@@ -63,11 +62,9 @@ const typeDefs = gql`
     type Mutation {
         uploadProduct(input: UploadProductInput!): Product
         #addProductToCart(productID: ID!, userID: ID!): User!
-        #updateUser(input: UserInput!): User!
-        #createUser(input: UserInput!): User!
+        updateUser(input: UserInput!): User!
         signIn(input: SignInInput!): User!
         signUp(input: UserInput!): User!
-        #login(input: SignInInput!): User! 
     }
 `;
 

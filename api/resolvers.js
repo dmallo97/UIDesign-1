@@ -33,8 +33,8 @@ const signInResolver = async (
 };
 
 const signUpResolver = async (
+    { input: { username, password, firstname, lastname, email, dni, country, city } }, //falta agregar imagen, si no sabemos la pelamos
     root,
-    { input: { username, password, email, name, dni } },
     ctx,
     info
 ) => {
@@ -45,9 +45,12 @@ const signUpResolver = async (
     const user = new User({
         username,
         password: Bcrypt.hashSync(password, 10),
+        firstname,
+        lastname,
         email,
-        name,
-        dni
+        dni,
+        country,
+        city
     });
     await user.save();
     return user.toJSON();
@@ -71,6 +74,27 @@ const uploadProductResolver = async(
     });
     await newProduct.save();
     return newProduct.toJSON();
+}
+
+const updateUser = async (
+    { input: { username, password, firstname, lastname, email, dni, country, city } }, //falta profileImage
+    root,
+    ctx,
+    info
+) => {
+    const user = ctx.user;
+
+    user.username = username;
+    user.password = password;
+    user.firstname = firstname;
+    user.lastname = lastname;
+    user.email = email;
+    user.dni = dni;
+    user.country = country;
+    user.city = city;
+
+    await user.save();
+    return user.toJSON();
 };
 
 export const resolvers = {
@@ -83,6 +107,7 @@ export const resolvers = {
         signIn: signInResolver,
         signUp: signUpResolver,
         uploadProduct: uploadProductResolver,
+        updateUser: updateUser
     },
     User: {
         id: user => user._id,
