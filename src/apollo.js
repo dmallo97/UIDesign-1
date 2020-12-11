@@ -1,24 +1,25 @@
-const { ApolloServer } = require('apollo-server');
-const typeDefs = require('./schema');
-const { createStore } = require('./utils');
-const resolvers = require('./resolvers');
+import { ApolloClient, createHttpLink, InMemoryCache } from "@apollo/client";
+import { setContext } from "@apollo/client/link/context";
 
-
-const ProductAPI = require('./datasources/product');
-const UserAPI = require('./datasources/user');
-
-
-const store = createStore();
-
-const server = new ApolloServer({
-    typeDefs,
-    resolvers,
-    dataSources: () => ({
-        productAPI: new ProductAPI({ store }),
-        userAPI: new UserAPI({ store })
-    })
+const httpLink = createHttpLink({
+    uri: '/api/graphql'
 });
 
-server.listen().then(({ url }) => {
-    console.log(`🚀 Server ready at ${url}`);
+const authLink = setContext((_, { headers }) => {
+    // get the authentication token from local storage if it exists
+    const token = localStorage.getItem("token");
+    // return the headers to the context so httpLink can read them
+    return {
+        headers: {
+            ...headers,
+            authorization: token ? `${token}` : ""
+        }
+    };
 });
+
+const client = new ApolloClient({
+    link: authLink.concat(httpLink),
+    cache: new InMemoryCache()
+});
+
+export default client;
