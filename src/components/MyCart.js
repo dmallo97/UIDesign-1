@@ -98,16 +98,17 @@ const PROCESS_ORDER_MUTATION = gql`
 
 const MyCart = () => {
     const classes = useStyles();
+    
+    const [products, setProducts] = React.useState({
+        products: []
+    });
 
     const [processOrderMutation] = useMutation(PROCESS_ORDER_MUTATION);
 
     const processOrder = async () => {
         const { outputCart } = await processOrderMutation();
+        setProducts(outputCart); //cualquiera?
     };
-
-    const [products, setProducts] = React.useState({
-        products: []
-    });
 
     return (
         <>
