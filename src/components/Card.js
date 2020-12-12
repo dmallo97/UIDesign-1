@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import IconButton from '@material-ui/core/IconButton';
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
+import { gql, useMutation } from '@apollo/client';
 
 const ADD_TO_CART_MUTATION = gql`
   mutation AddToCart($input: CartInput!) {
@@ -16,9 +17,15 @@ const Card = ({ id, image, title, size, quantity }) => {
   const [addToCartMutation] = useMutation(ADD_TO_CART_MUTATION);
 
   const addToCart = async () => {
-    /* Aun no implementado
-    */
-   alert('No implementado aun');
+    /*const { data } = await addToCartMutation({
+      variables: {
+        input: {
+          id
+          //userId
+        }
+      }
+    });*/
+    alert('No implementado.');
   };
 
   return (

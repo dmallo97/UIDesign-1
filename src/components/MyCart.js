@@ -3,6 +3,7 @@ import MUIDataTable from "mui-datatables";
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import logo from "../lizard.jpg";
+import { gql, useMutation } from '@apollo/client';
 
 const columns = [
     {
@@ -86,8 +87,27 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
+const PROCESS_ORDER_MUTATION = gql`
+  mutation processOrder{
+    processOrder{
+      productId
+      userId
+    }
+  }
+`;
+
 const MyCart = () => {
     const classes = useStyles();
+
+    const [processOrderMutation] = useMutation(PROCESS_ORDER_MUTATION);
+
+    const processOrder = async () => {
+        const { outputCart } = await processOrderMutation();
+    };
+
+    const [products, setProducts] = React.useState({
+        products: []
+    });
 
     return (
         <>
@@ -98,7 +118,7 @@ const MyCart = () => {
                 options={options}
             /> {/* components={components} */}
             <div className={classes.container}>
-                <Button className={classes.button} variant="contained" color="primary">Recibir</Button>
+                <Button className={classes.button} variant="contained" color="primary" onClick={processOrder()}>Recibir</Button>
             </div>
         </>
     )
