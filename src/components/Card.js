@@ -1,28 +1,49 @@
 import React from "react";
 import styled from "styled-components";
-import Fab from '@material-ui/core/Fab';
-import AddIcon from '@material-ui/icons/Add';
+import IconButton from '@material-ui/core/IconButton';
+import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
 
-const Card = ({ image, title, size, quantity }) => (
-  <Container src={image}>
-    <Image src={image} />
-    <BottomContainer>
+const ADD_TO_CART_MUTATION = gql`
+  mutation AddToCart($input: CartInput!) {
+    addProductToCart(input: $input) {
+      productId
+      userId
+    }
+  }
+`;
 
-      <InfoContainer>
-        <TopDescription>
-          <Title>{title}</Title>
-          <SizeDescription>Talle {size}</SizeDescription>
-        </TopDescription>
-        <Quantity>Cantidad: {quantity}</Quantity>
-      </InfoContainer>
+const Card = ({ id, image, title, size, quantity }) => {
+  const [addToCartMutation] = useMutation(ADD_TO_CART_MUTATION);
 
-      <ButtonContainer>
-        <Fab size="small" ><AddIcon /></Fab>
-      </ButtonContainer>
+  const addToCart = async () => {
+    /* Aun no implementado
+    */
+   alert('No implementado aun');
+  };
 
-    </BottomContainer>
-  </Container>
-);
+  return (
+    <Container src={image}>
+      <Image src={image} />
+      <BottomContainer>
+
+        <InfoContainer>
+          <TopDescription>
+            <Title>{title}</Title>
+            <SizeDescription>Talle {size}</SizeDescription>
+          </TopDescription>
+          <Quantity>Cantidad: {quantity}</Quantity>
+        </InfoContainer>
+
+        <ButtonContainer>
+          <IconButton color="primary" aria-label="add to shopping cart" onClick={addToCart()}>
+            <AddShoppingCartIcon />
+          </IconButton>
+        </ButtonContainer>
+
+      </BottomContainer>
+    </Container>
+  );
+}
 
 const Container = styled.div`
   width: 100%;

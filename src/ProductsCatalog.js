@@ -2,39 +2,40 @@ import React from "react";
 import styled from "styled-components";
 import Card from "./components/Card";
 import logo from "./lizard.jpg";
+import { gql, useQuery } from "@apollo/client";
 
-const ProductsCatalog = () => (
-  <Container>
-    <Card
-      image={logo}
-      title="Lizard jdjjslkdfslkdfjlsdjflsjksdfsdfsdfsdfasdf sf sfsdf sdfdfsdfs ffsdfsdfasdff"
-      description="Lizards are widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica"
-      size="M"
-      quantity='1'
-    />
-    <Card
-      image={logo}
-      title="Lizard"
-      description="Lizards are widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica"
-      size="M"
-      quantity='2'
-    />
-    <Card
-      image={logo}
-      title="Lizard"
-      description="Lizards are widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica"
-      size="M"
-      quantity='12'
-    />
-    <Card
-      image={logo}
-      title="Lizard"
-      description="Lizards are widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica"
-      size="M"
-      quantity='9999'
-    />
-  </Container>
-);
+const PRODUCTS_QUERY = gql`
+  query Products{
+    products{
+      id
+      title
+      size
+      quantity
+      productImage
+    }
+  }
+`;
+
+const ProductsCatalog = () => {
+  const { 
+    data: {
+       products = [] 
+      } = {} 
+   } = useQuery(PRODUCTS_QUERY);
+  return (
+    <Container>
+      {products.map(product => (
+        <Card
+        id={product.id}
+        image={product.productImage}
+        title={product.title}
+        size={product.size}
+        quantity={product.quantity}
+        />
+      ))}
+    </Container>
+  );
+}
 
 const Container = styled.div`
   display: grid;
