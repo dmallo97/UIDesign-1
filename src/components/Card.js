@@ -17,15 +17,13 @@ const Card = ({ id, image, title, size, quantity }) => {
   const [addToCartMutation] = useMutation(ADD_TO_CART_MUTATION);
 
   const addToCart = async () => {
-    /*const { data } = await addToCartMutation({
+    const { data } = await addToCartMutation({
       variables: {
         input: {
           id
-          //userId
         }
       }
-    });*/
-    alert('No implementado.');
+    });
   };
 
   return (

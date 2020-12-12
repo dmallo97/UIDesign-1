@@ -65,7 +65,6 @@ const typeDefs = gql`
 
     input CartInput {
         productId: ID!
-        userId: ID!
     }
 
     type Mutation {

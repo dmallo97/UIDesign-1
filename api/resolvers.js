@@ -118,13 +118,12 @@ const addProductToCartResolver = async (
     root,
     {
         input: {
-            productId,
-            userId
+            productId
         } },
     ctx,
     info
 ) => {
-    //const user = ctx.user;
+    const userId = ctx.user._id;
 
     let shoppingCart = await ShoppingCart.findOne({ userId });
     if (!shoppingCart) {
