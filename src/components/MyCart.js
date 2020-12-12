@@ -114,7 +114,7 @@ const MyCart = () => {
         <>
             <MUIDataTable
                 title={"Mis prendas"}
-                data={data}
+                data={products}
                 columns={columns}
                 options={options}
             /> {/* components={components} */}
