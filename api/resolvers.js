@@ -178,6 +178,9 @@ const processOrderResolver = async (root, args, ctx, info) => {
     shoppingCart.productIds.forEach(async (productIdOrdered) => {
         const product = Product.findById(productIdOrdered);
         if (product) {
+            if(product.quantity === 0) {
+                throw new Error('No se ha podido procesar la orden. El producto ' + product.title + ' ya no está disponible.');
+            }
             if (product.quantity === 1) {
                 await product.remove();
             }
