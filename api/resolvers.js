@@ -154,12 +154,11 @@ const removeProductFromCartResolver = async (
     {
         input: {
             productId,
-            userId
         } },
     ctx,
     info
 ) => {
-    //const user = ctx.user;
+    const userId = ctx.user._id;
 
     let shoppingCart = await ShoppingCart.findOne({ userId });
 
