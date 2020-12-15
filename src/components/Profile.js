@@ -72,7 +72,7 @@ const Profile = ({ user, setUser }) => {
       }
     })
     setUser(data.updateUser);
-    console.log("Imagen seleccionada: "+ productImage.raw);
+    console.log("Imagen seleccionada: "+ avatar.raw);
   }
 
 
