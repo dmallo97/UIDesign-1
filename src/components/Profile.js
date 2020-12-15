@@ -18,6 +18,8 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
+/* Habria que hacer mutation diferente para actualizar foto de un usuario? */
+
 const Profile = ({ user, setUser }) => {
   const classes = useStyles();
 

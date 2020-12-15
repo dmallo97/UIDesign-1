@@ -9,6 +9,23 @@ import {
   Grid,
   TextField
 } from '@material-ui/core';
+import { gql, useMutation } from '@apollo/client';
+
+const UPDATE_USER_MUTATION = gql`
+  mutation UpdateUser($input: UserInput!) {
+    updateUser(input: $input) {
+      id
+      firstname
+      token
+      lastname
+      city
+      country
+      email
+      dni
+      password
+    }
+  }
+`;
 
 const cities = [
   {
@@ -22,10 +39,23 @@ const cities = [
   {
     value: 'ciudad-de-la-costa',
     label: 'Ciudad de la Costa'
+  },
+  {
+    value: 'punta-del-este',
+    label: 'Punta del Este'
+  },
+  {
+    value: 'colonia-del-sacramento',
+    label: 'Colonia del Sacramento'
+  },
+  {
+    value: 'rivera',
+    label: 'Rivera'
   }
 ];
 
 const ProfileDetails = ({ user, setUser }) => {
+  const [updateUserMutation] = useMutation(UPDATE_USER_MUTATION);
   const [values, setValues] = useState({
     firstName: user.firstName,
     lastName: user.lastName,
@@ -43,9 +73,26 @@ const ProfileDetails = ({ user, setUser }) => {
   };
 
   const handleClick = (event) => {
-    setUser({
+    event.preventDefault();
+    event.stopPropagation();
+    /*setUser({
       ...values,
-    })
+    });*/
+    const firstname = values.firstName;
+    const lastname = values.lastName;
+    const email = values.email;
+    const city = values.city;
+    const { data } = await updateUserMutation({ //que hago con el resultado?
+      variables: {
+        input: {
+          firstname,
+          lastname,
+          email,
+          city
+        }
+      }
+    });
+    setUser({ data });
   }
 
   return (
@@ -138,7 +185,7 @@ const ProfileDetails = ({ user, setUser }) => {
                 label="País"
                 name="country"
                 onChange={handleChange}
-                required
+                disabled
                 value={values.country}
                 variant="outlined"
               />
@@ -156,7 +203,7 @@ const ProfileDetails = ({ user, setUser }) => {
                 required
                 select
                 SelectProps={{ native: true }}
-                value={values.state}
+                value={values.city}
                 variant="outlined"
               >
                 {cities.map((option) => (

@@ -9,7 +9,24 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
+import { gql, useMutation } from '@apollo/client';
+
+const SIGNUP_MUTATION = gql`
+  mutation Signup($input: UserInput!) {
+    signUp(input: $input) {
+      id
+      firstname
+      token
+      lastname
+      city
+      country
+      email
+      dni
+      password
+    }
+  }
+`;
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -43,11 +60,53 @@ const cities = [
   {
     value: 'ciudad-de-la-costa',
     label: 'Ciudad de la Costa'
+  },
+  {
+    value: 'punta-del-este',
+    label: 'Punta del Este'
+  },
+  {
+    value: 'colonia-del-sacramento',
+    label: 'Colonia del Sacramento'
+  },
+  {
+    value: 'rivera',
+    label: 'Rivera'
   }
 ];
 
 export default function SignUp() {
   const classes = useStyles();
+  const [signUpMutation] = useMutation(SIGNUP_MUTATION);
+  const [values, setValues] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    password: '',
+    ci: '',
+    city: '',
+    country: 'Uruguay'
+  });
+
+  const handleChange = (event) => {
+    setValues({
+      ...values,
+      [event.target.name]: event.target.value
+    });
+  };
+
+  const handleClick = (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    await signUpMutation({
+      variables: {
+        input: {
+          ...values //funcionara? sino hay que ir variable por variable
+        }
+      }
+    })
+    history.push('/login');
+  }
 
   return (
     <Container component="main" maxWidth="xs">
@@ -59,7 +118,7 @@ export default function SignUp() {
         <Typography component="h1" variant="h5">
           Registrarse
         </Typography>
-        <form className={classes.form} noValidate>
+        <form className={classes.form} noValidate onSubmit={handleClick}>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <TextField
@@ -70,6 +129,7 @@ export default function SignUp() {
                 fullWidth
                 id="firstName"
                 label="Nombre"
+                onChange={handleChange}
                 autoFocus
               />
             </Grid>
@@ -81,6 +141,7 @@ export default function SignUp() {
                 id="lastName"
                 label="Apellido"
                 name="lastName"
+                onChange={handleChange}
                 autoComplete="lname"
               />
             </Grid>
@@ -92,6 +153,7 @@ export default function SignUp() {
                 id="email"
                 label="Correo electrónico"
                 name="email"
+                onChange={handleChange}
                 autoComplete="email"
               />
             </Grid>
@@ -104,6 +166,7 @@ export default function SignUp() {
                 label="Contraseña"
                 type="password"
                 id="password"
+                onChange={handleChange}
                 autoComplete="current-password"
               />
             </Grid>
@@ -115,6 +178,7 @@ export default function SignUp() {
                 name="ci"
                 label="Cédula de identidad"
                 id="ci"
+                onChange={handleChange}
                 autoComplete="current-ci"
               />
             </Grid>
@@ -125,6 +189,7 @@ export default function SignUp() {
                 name="city"
                 required
                 select
+                onChange={handleChange}
                 SelectProps={{ native: true }}
                 variant="outlined"
               >

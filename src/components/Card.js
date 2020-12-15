@@ -7,8 +7,10 @@ import { gql, useMutation } from '@apollo/client';
 const ADD_TO_CART_MUTATION = gql`
   mutation AddToCart($input: CartInput!) {
     addProductToCart(input: $input) {
-      productId
       userId
+      products{
+        id
+      }
     }
   }
 `;
@@ -16,7 +18,7 @@ const ADD_TO_CART_MUTATION = gql`
 const Card = ({ id, image, title, size, quantity }) => {
   const [addToCartMutation] = useMutation(ADD_TO_CART_MUTATION);
 
-  const addToCart = async () => {
+  const addToCart = async (event) => {
     const { data } = await addToCartMutation({
       variables: {
         input: {
@@ -40,7 +42,7 @@ const Card = ({ id, image, title, size, quantity }) => {
         </InfoContainer>
 
         <ButtonContainer>
-          <IconButton color="primary" aria-label="add to shopping cart" onClick={addToCart()}>
+          <IconButton color="primary" aria-label="add to shopping cart" onClick={addToCart}>
             <AddShoppingCartIcon />
           </IconButton>
         </ButtonContainer>

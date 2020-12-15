@@ -12,6 +12,23 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { Link, useHistory } from "react-router-dom";
+import { gql, useMutation } from '@apollo/client';
+
+const LOGIN_MUTATION = gql`
+  mutation Login($input: SignInInput!) {
+    signIn(input: $input) {
+      id
+      firstname
+      token
+      lastname
+      city
+      country
+      email
+      dni
+      password
+    }
+  }
+`;
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -45,6 +62,7 @@ const user = {
 };
 
 export default function SignIn({setUser}) {
+  const [signInMutation] = useMutation(LOGIN_MUTATION);
   const classes = useStyles();
   const history = useHistory();
   const [values, setValues] = React.useState({
@@ -54,12 +72,22 @@ export default function SignIn({setUser}) {
 
   const handleClick = (event) => {
     event.preventDefault();
-    event.stopPropagation();  
-    if(user.email === values.email && values.password  === user.password)
+    event.stopPropagation();
+    const { data } = await signInMutation({
+      variables: {
+        input: {
+          email,
+          password
+        }
+      }
+    });
+    setUser(data); //de alguna manera hay que setear el usuario en la app. Imagino que data retorna el formato de un usuario y esta es la manera de setearlo
+    history.push('/account');
+    /*if(user.email === values.email && values.password  === user.password) //Login hardcodeado
     {
       setUser(user);
       history.push('/account');
-    } 
+    }*/ 
   }
 
   return (

@@ -10,6 +10,26 @@ import Avatar from '@material-ui/core/Avatar';
 import PublishIcon from '@material-ui/icons/Publish';
 import MuiAlert from '@material-ui/lab/Alert';
 import Snackbar from '@material-ui/core/Snackbar';
+import { gql, useMutation } from '@apollo/client';
+
+const UPLOAD_PRODUCT_MUTATION = gql`
+  mutation UploadProduct($input: UploadProductInput!){
+    uploadProduct(input: $input){
+        title
+        size
+        quantity
+        productImage
+    }
+  }
+`;
+
+const IMAGE_UPLOAD_MUTATION = gql`
+  mutation($file: Upload!) {
+    uploadFile(file: $file) {
+      success
+    }
+  }
+`;
 
 const productSizes = [
     {
@@ -103,13 +123,52 @@ function Alert(props) {
 const ProductUpload = () => {
     const classes = useStyles();
     const [productSize, setSize] = React.useState('M');
+    const [productTitle, setTitle] = React.useState("Sin definir");
+    const [productQuantity, setQuantity] = React.useState(1);
+    const [productImage, setProductImage] = React.useState({
+        preview: "",
+        raw:""
+    });
     const [open, setOpen] = React.useState(false);
+    const [uploadProductMutation] = useMutation(UPLOAD_PRODUCT_MUTATION);
+    const [uploadImageMutation] = useMutation(IMAGE_UPLOAD_MUTATION); //Puede que no haga falta
 
-    const handleChange = (event) => {
+    const handleSizeChange = (event) => {
         setSize(event.target.value);
     }
 
-    const handleClick = (event) => {
+    const handleTitleChange = (event) => {
+        setTitle(event.target.value);
+    }
+
+    const handleQuantityChange = (event) => {
+        setQuantity(event.target.value);
+    }
+
+    const handleImageUploadedBtnClick = (event) => {
+        /*event.preventDefault();
+        const formData = new FormData();
+        formData.append("productImage", productImage.raw);*/
+
+
+    }
+
+    const handleImageChange = ({
+        target: {
+          validity,
+          files: [file],
+        },
+      }) => {
+        /*if(event.target.files.length){
+            setProductImage({
+                preview: URL.createObjectURL(event.target.files[0]),
+                raw: event.target.files[0]
+            })
+        }
+        if (validity.valid) uploadImageMutation({ variables: { file } });*/
+    }
+
+    const handleClick = async (event) => {
         try {
             if (document.forms["uploadForm"]["title"].value !== "") {
                 setOpen(true);
@@ -118,6 +177,15 @@ const ProductUpload = () => {
             }
             event.preventDefault();
             event.stopPropagation();
+            const { data } = await uploadProductMutation({ //que se deberia hacer con el producto devuelto? mostrar otra pagina? redireccionar?
+                variables: {
+                  input: { //Falta imagen
+                    productTitle,
+                    productSize,
+                    productQuantity,
+                  }
+                }
+              });
         } catch (error) {
             console.error(error);
         }
@@ -140,7 +208,7 @@ const ProductUpload = () => {
                 Sube una prenda
             </Typography>
             <form name="uploadForm" className={classes.formContainer} component="form" onSubmit={handleClick}>
-                <TextField name="title" className={classes.textField} required id="standard-required" label="Obligatorio" placeholder="Título" />
+                <TextField name="title" className={classes.textField} onChange={handleTitleChange} required id="standard-required" label="Obligatorio" placeholder="Título" />
 
                 <TextField
                     className={classes.textField}
@@ -148,7 +216,7 @@ const ProductUpload = () => {
                     select
                     label="Tamaño"
                     value={productSize}
-                    onChange={handleChange}
+                    onChange={handleSizeChange}
                     helperText="Por favor seleccione un tamaño"
                 >
                     {productSizes.map((option) => (
@@ -171,6 +239,7 @@ const ProductUpload = () => {
                         marks
                         min={1}
                         max={10}
+                        onChange={handleQuantityChange}
                     />
                 </div>
 
@@ -179,9 +248,10 @@ const ProductUpload = () => {
                     className={classes.input}
                     id="contained-button-file"
                     type="file"
+                    onChange={handleImageChange}
                 />
                 <label htmlFor="contained-button-file">
-                    <Button className={classes.uploadButton} variant="outlined" component="span">
+                    <Button className={classes.uploadButton} variant="outlined" component="span" onClick={handleImageUploadedBtnClick}>
                         Subir imagen
                 </Button>
                 </label>

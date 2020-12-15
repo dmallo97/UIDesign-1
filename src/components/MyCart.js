@@ -90,7 +90,6 @@ const useStyles = makeStyles((theme) => ({
 const PROCESS_ORDER_MUTATION = gql`
   mutation processOrder{
     processOrder{
-      productId
       userId
     }
   }
@@ -107,7 +106,7 @@ const MyCart = () => {
 
     const processOrder = async () => {
         const { outputCart } = await processOrderMutation();
-        setProducts(outputCart); //cualquiera?
+        setProducts({products: []}); //cualquiera? Hay que buscar una manera de setear los productos que te devuelve el procesar orden. O para que sirve que te retorne algo? Tambien se podria setear un array vacio si igual se vaciaria
     };
 
     return (
