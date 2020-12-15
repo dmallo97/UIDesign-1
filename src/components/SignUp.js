@@ -16,14 +16,6 @@ const SIGNUP_MUTATION = gql`
   mutation Signup($input: UserInput!) {
     signUp(input: $input) {
       id
-      firstname
-      token
-      lastname
-      city
-      country
-      email
-      dni
-      password
     }
   }
 `;
@@ -77,8 +69,9 @@ const cities = [
 
 export default function SignUp() {
   const classes = useStyles();
+  let history = useHistory();
   const [signUpMutation] = useMutation(SIGNUP_MUTATION);
-  const [values, setValues] = useState({
+  const [values, setValues] = React.useState({
     firstName: '',
     lastName: '',
     email: '',
@@ -95,14 +88,12 @@ export default function SignUp() {
     });
   };
 
-  const handleClick = (event) => {
+  const handleClick = async (event) => {
     event.preventDefault();
     event.stopPropagation();
     await signUpMutation({
       variables: {
-        input: {
-          ...values //funcionara? sino hay que ir variable por variable
-        }
+        input: values
       }
     })
     history.push('/login');

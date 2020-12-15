@@ -25,7 +25,7 @@ const LOGIN_MUTATION = gql`
       country
       email
       dni
-      password
+      profileImage
     }
   }
 `;
@@ -50,7 +50,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const user = {
+const user = { //habria que borrar esto
   firstName: 'Cholo',
   lastName: 'Simeone',
   avatar: 'https://i0.wp.com/thesefootballtimes.co/wp-content/uploads/2018/10/simeone.png?fit=1781%2C1289&ssl=1',
@@ -70,24 +70,16 @@ export default function SignIn({setUser}) {
     password: '1234'
   });
 
-  const handleClick = (event) => {
+  const handleClick = async (event) => {
     event.preventDefault();
     event.stopPropagation();
     const { data } = await signInMutation({
       variables: {
-        input: {
-          email,
-          password
-        }
+        input : values
       }
     });
-    setUser(data); //de alguna manera hay que setear el usuario en la app. Imagino que data retorna el formato de un usuario y esta es la manera de setearlo
+    setUser(data.signIn);
     history.push('/account');
-    /*if(user.email === values.email && values.password  === user.password) //Login hardcodeado
-    {
-      setUser(user);
-      history.push('/account');
-    }*/ 
   }
 
   return (

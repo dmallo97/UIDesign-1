@@ -48,7 +48,7 @@ const typeDefs = gql`
     }
 
     input UserInput {
-        #username: String Porque incluir este sino usamos username?
+        #username: String Porque incluir este si no usamos username?
         password: String
         firstname: String
         lastname: String
@@ -56,7 +56,7 @@ const typeDefs = gql`
         country: String
         city: String
         ci: String
-        #profileImage: String Se actualizaria por separado. Corresponde que este por aca?
+        profileImage: String
     }
 
     input SignInInput {
