@@ -70,7 +70,6 @@ const cities = [
 ];
 
 export default function SignUp() {
-  let history = useHistory();
   const classes = useStyles();
   let history = useHistory();
   const [signUpMutation] = useMutation(SIGNUP_MUTATION);
