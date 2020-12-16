@@ -17,17 +17,23 @@ const PRODUCTS_QUERY = gql`
 `;
 
 const ProductsCatalog = () => {
-  const { 
-    data: {
-       products = [] 
-      } = {} 
-   } = useQuery(PRODUCTS_QUERY);
+  const { data , loading } = useQuery(PRODUCTS_QUERY);
+  const [products, setProducts] = React.useState({} = []);
+  if(loading)
+  {
+    return "Aguarde un momento";
+  }
+  if(data)
+  {
+    setProducts(data.products);
+  }
+  
   return (
     <Container>
       {products.map(product => (
         <Card
         id={product.id}
-        image={product.productImage}
+        image={logo}
         title={product.title}
         size={product.size}
         quantity={product.quantity}

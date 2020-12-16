@@ -129,13 +129,12 @@ const MyCart = () => {
     const classes = useStyles();
     const [processOrderMutation] = useMutation(PROCESS_ORDER_MUTATION);
     const [removeProductFromCartMutation] = useMutation(REMOVE_PROD_FROM_CART_MUTATION);
-    //const [cartQuery] = useQuery(CART_QUERY);
-
-    const { data } = useQuery(CART_QUERY);
-    const [products, setProducts] = React.useState({
-        products: data.shoppingCart.products
-    });
-
+    const { data, loading } = useQuery(CART_QUERY);
+    const [products, setProducts] = React.useState({} = []);
+    if(data){
+        setProducts(data.products);
+    }
+    
     const processOrder = async () => {
         const { outputCart } = await processOrderMutation();
         setProducts(outputCart.shoppingCart.products); 
