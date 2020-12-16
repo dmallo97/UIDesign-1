@@ -90,7 +90,7 @@ const Profile = ({ user, setUser }) => {
             gutterBottom
             variant="h3"
           >
-            {`${user.firstName} ${user.lastName}`}
+            {`${user.firstname} ${user.lastname}`}
           </Typography>
           <Typography
             color="textSecondary"

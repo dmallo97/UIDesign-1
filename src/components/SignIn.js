@@ -66,8 +66,8 @@ export default function SignIn({setUser}) {
   const classes = useStyles();
   const history = useHistory();
   const [values, setValues] = React.useState({
-    email: 'cholo@simeone.com',
-    password: '1234'
+    email: '',
+    password: ''
   });
 
   const handleClick = async (event) => {

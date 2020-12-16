@@ -4,7 +4,6 @@ const typeDefs = gql`
     type User {
         id: ID!
         token: String!
-        username: String!
         password: String!
         firstname: String
         lastname: String
@@ -48,7 +47,6 @@ const typeDefs = gql`
     }
 
     input UserInput {
-        #username: String Porque incluir este si no usamos username?
         password: String
         firstname: String
         lastname: String
@@ -60,7 +58,7 @@ const typeDefs = gql`
     }
 
     input SignInInput {
-        username: String!
+        email: String!
         password: String!
     }
 

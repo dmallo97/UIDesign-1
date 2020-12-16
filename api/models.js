@@ -17,7 +17,6 @@ const Product = mongoose.model("Product", {
 });
 
 const User = mongoose.model("User", {
-    username: String,
     password: String,
     firstname: String,
     lastname: String,

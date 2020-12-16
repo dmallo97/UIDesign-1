@@ -1,8 +1,9 @@
 import React from "react";
 import styled from "styled-components";
 import IconButton from '@material-ui/core/IconButton';
-import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
+import {AddShoppingCartIcon, DeleteIcon} from '@material-ui/icons/AddShoppingCart';
 import { gql, useMutation } from '@apollo/client';
+import {useHistory} from 'react-router-dom';
 
 const ADD_TO_CART_MUTATION = gql`
   mutation AddToCart($input: CartInput!) {
@@ -15,8 +16,25 @@ const ADD_TO_CART_MUTATION = gql`
   }
 `;
 
+const REMOVE_PRODUCT_MUTATION = gql`
+  mutation RemoveProduct($input: RemoveProductInput!) {
+    removeProduct(input: $input) {
+      userId
+      products{
+        id
+        title
+        size
+        quantity
+        productImage
+      }
+    }
+  }
+`;
+
 const Card = ({ id, image, title, size, quantity }) => {
   const [addToCartMutation] = useMutation(ADD_TO_CART_MUTATION);
+  const [removeProductMutation] = useMutation(REMOVE_PRODUCT_MUTATION);
+  let history = useHistory();
 
   const addToCart = async (event) => {
     const { data } = await addToCartMutation({
@@ -26,7 +44,19 @@ const Card = ({ id, image, title, size, quantity }) => {
         }
       }
     });
+    history.push('/myCart');
   };
+
+  const deleteProduct = async (event) => {
+    const { data } = await removeProductMutation({
+      variables:{
+        input:{
+          productId: this.props.id
+        }
+      }
+    });
+    //redireccionar? refrescar?
+  }
 
   return (
     <Container src={image}>
@@ -44,6 +74,9 @@ const Card = ({ id, image, title, size, quantity }) => {
         <ButtonContainer>
           <IconButton color="primary" aria-label="add to shopping cart" onClick={addToCart}>
             <AddShoppingCartIcon />
+          </IconButton>
+          <IconButton color="secondary" aria-label="delete product" onClick={deleteProduct}>
+            <DeleteIcon />
           </IconButton>
         </ButtonContainer>
 
