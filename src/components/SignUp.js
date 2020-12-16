@@ -70,6 +70,7 @@ const cities = [
 ];
 
 export default function SignUp() {
+  let history = useHistory();
   const classes = useStyles();
   let history = useHistory();
   const [signUpMutation] = useMutation(SIGNUP_MUTATION);
@@ -218,11 +219,11 @@ export default function SignUp() {
           </Button>
           <Grid container justify="flex-end">
             <Grid item>
-                <Link to="/login">
-                    <LinkUI href="#" variant="body2">
-                        ¿Ya tienes una cuenta? Ingresa.
+              <Link to="/login">
+                <LinkUI href="#" variant="body2">
+                  ¿Ya tienes una cuenta? Ingresa.
                     </LinkUI>
-                </Link>
+              </Link>
             </Grid>
           </Grid>
         </form>

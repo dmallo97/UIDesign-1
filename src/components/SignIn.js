@@ -61,7 +61,7 @@ const user = { //habria que borrar esto
   password: '1234'
 };
 
-export default function SignIn({setUser}) {
+export default function SignIn({ setUser }) {
   const [signInMutation] = useMutation(LOGIN_MUTATION);
   const classes = useStyles();
   const history = useHistory();
@@ -75,7 +75,7 @@ export default function SignIn({setUser}) {
     event.stopPropagation();
     const { data } = await signInMutation({
       variables: {
-        input : values
+        input: values
       }
     });
     setUser(data.signIn);
