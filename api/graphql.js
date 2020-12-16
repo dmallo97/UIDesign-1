@@ -54,15 +54,16 @@ const server = new ApolloServer({
   context: ({ req, res }) => {
     try {
       // Get the user token from the headers.
-      const token = req.headers.authorization || req.cookies.token || "";
+      const token = req.headers.authorization || req.cookies.token; //|| ""
+      if (token) {
+        // try to retrieve a user with the token
+        const user = getUserFromToken(token);
+        // add the user to the context
+        return {
+          user
+        };
+      }
 
-      // try to retrieve a user with the token
-      const user = getUserFromToken(token);
-
-      // add the user to the context
-      return {
-        user
-      };
     } catch (error) {
       console.log("Un token es requerido. Error: ", error);
     }
