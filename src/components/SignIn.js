@@ -61,7 +61,7 @@ const user = {
   password: '1234'
 };
 
-export default function SignIn({setUser}) {
+export default function SignIn({ setUser }) {
   const [signInMutation] = useMutation(LOGIN_MUTATION);
   const classes = useStyles();
   const history = useHistory();
@@ -70,14 +70,14 @@ export default function SignIn({setUser}) {
     password: '1234'
   });
 
-  const handleClick = (event) => {
+  const handleClick = async (event) => {
     event.preventDefault();
     event.stopPropagation();
     const { data } = await signInMutation({
       variables: {
         input: {
-          email,
-          password
+          email: values.email,
+          password: values.password
         }
       }
     });
@@ -87,7 +87,7 @@ export default function SignIn({setUser}) {
     {
       setUser(user);
       history.push('/account');
-    }*/ 
+    }*/
   }
 
   return (

@@ -76,9 +76,10 @@ const cities = [
 ];
 
 export default function SignUp() {
+  let history = useHistory();
   const classes = useStyles();
   const [signUpMutation] = useMutation(SIGNUP_MUTATION);
-  const [values, setValues] = useState({
+  const [values, setValues] = React.useState({
     firstName: '',
     lastName: '',
     email: '',
@@ -95,7 +96,7 @@ export default function SignUp() {
     });
   };
 
-  const handleClick = (event) => {
+  const handleClick = async (event) => {
     event.preventDefault();
     event.stopPropagation();
     await signUpMutation({
@@ -225,11 +226,11 @@ export default function SignUp() {
           </Button>
           <Grid container justify="flex-end">
             <Grid item>
-                <Link to="/login">
-                    <LinkUI href="#" variant="body2">
-                        ¿Ya tienes una cuenta? Ingresa.
+              <Link to="/login">
+                <LinkUI href="#" variant="body2">
+                  ¿Ya tienes una cuenta? Ingresa.
                     </LinkUI>
-                </Link>
+              </Link>
             </Grid>
           </Grid>
         </form>

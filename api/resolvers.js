@@ -175,9 +175,9 @@ const processOrderResolver = async (root, args, ctx, info) => {
     const userId = ctx.user._id;
     const shoppingCart = await ShoppingCart.findOne({ userId });
     shoppingCart.productIds.forEach(async (productIdOrdered) => {
-        const product = Product.findById(productIdOrdered);
+        const product = await Product.findById(productIdOrdered);
         if (product) {
-            if(product.quantity === 0) {
+            if (product.quantity === 0) {
                 throw new Error('No se ha podido procesar la orden. El producto ' + product.title + ' ya no está disponible.');
             }
             if (product.quantity === 1) {

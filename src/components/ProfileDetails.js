@@ -72,7 +72,7 @@ const ProfileDetails = ({ user, setUser }) => {
     });
   };
 
-  const handleClick = (event) => {
+  const handleClick = async (event) => {
     event.preventDefault();
     event.stopPropagation();
     /*setUser({
