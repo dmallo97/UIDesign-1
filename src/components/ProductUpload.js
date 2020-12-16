@@ -11,6 +11,7 @@ import PublishIcon from '@material-ui/icons/Publish';
 import MuiAlert from '@material-ui/lab/Alert';
 import Snackbar from '@material-ui/core/Snackbar';
 import { gql, useMutation } from '@apollo/client';
+import { useHistory } from 'react-router-dom';
 
 const UPLOAD_PRODUCT_MUTATION = gql`
   mutation UploadProduct($input: UploadProductInput!){
@@ -120,8 +121,16 @@ function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
+const toBase64 = file => new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = error => reject(error);
+});
+
 const ProductUpload = () => {
     const classes = useStyles();
+    let history = useHistory();
     const [productSize, setSize] = React.useState('M');
     const [productTitle, setTitle] = React.useState("Sin definir");
     const [productQuantity, setQuantity] = React.useState(1);
@@ -131,7 +140,6 @@ const ProductUpload = () => {
     });
     const [open, setOpen] = React.useState(false);
     const [uploadProductMutation] = useMutation(UPLOAD_PRODUCT_MUTATION);
-    const [uploadImageMutation] = useMutation(IMAGE_UPLOAD_MUTATION); //Puede que no haga falta
 
     const handleSizeChange = (event) => {
         setSize(event.target.value);
@@ -145,27 +153,16 @@ const ProductUpload = () => {
         setQuantity(event.target.value);
     }
 
-    const handleImageUploadedBtnClick = (event) => {
-        /*event.preventDefault();
-        const formData = new FormData();
-        formData.append("productImage", productImage.raw);*/
-
-
-    }
-
-    const handleImageChange = ({
-        target: {
-          validity,
-          files: [file],
-        },
-      }) => {
-        /*if(event.target.files.length){
+    const handleImageChange = async (event) => {
+        if(event.target.files.length){
+            const file = event.target.files[0];
+            const result = await toBase64(file).catch(e => Error(e));
             setProductImage({
                 preview: URL.createObjectURL(event.target.files[0]),
-                raw: event.target.files[0]
-            })
+                raw: result
+            });
         }
-        if (validity.valid) uploadImageMutation({ variables: { file } });*/
+        console.log("Imagen seleccionada: "+ productImage.raw);
     }
 
     const handleClick = async (event) => {
@@ -177,15 +174,17 @@ const ProductUpload = () => {
             }
             event.preventDefault();
             event.stopPropagation();
-            const { data } = await uploadProductMutation({ //que se deberia hacer con el producto devuelto? mostrar otra pagina? redireccionar?
+            const { data } = await uploadProductMutation({
                 variables: {
-                  input: { //Falta imagen
-                    productTitle,
-                    productSize,
-                    productQuantity,
+                  input: {
+                    title: productTitle,
+                    size: productSize,
+                    quantity: productQuantity,
+                    productImage: productImage
                   }
                 }
               });
+            history.push('/products');
         } catch (error) {
             console.error(error);
         }
@@ -251,12 +250,14 @@ const ProductUpload = () => {
                     onChange={handleImageChange}
                 />
                 <label htmlFor="contained-button-file">
-                    <Button className={classes.uploadButton} variant="outlined" component="span" onClick={handleImageUploadedBtnClick}>
+                    <Button className={classes.uploadButton} variant="outlined" component="span">
                         Subir imagen
                 </Button>
                 </label>
 
                 <Button type="submit" className={classes.donateButton} variant="contained" color="primary">Donar</Button>
+
+                { }
             </form>
             <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
                 <Alert onClose={handleClose} severity="success">

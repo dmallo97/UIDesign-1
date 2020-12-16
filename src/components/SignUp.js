@@ -16,13 +16,7 @@ const SIGNUP_MUTATION = gql`
   mutation Signup($input: UserInput!) {
     signUp(input: $input) {
       id
-      firstname
       token
-      lastname
-      city
-      country
-      email
-      dni
       password
     }
   }
@@ -78,10 +72,11 @@ const cities = [
 export default function SignUp() {
   let history = useHistory();
   const classes = useStyles();
+  let history = useHistory();
   const [signUpMutation] = useMutation(SIGNUP_MUTATION);
   const [values, setValues] = React.useState({
-    firstName: '',
-    lastName: '',
+    firstname: '',
+    lastname: '',
     email: '',
     password: '',
     ci: '',
@@ -101,11 +96,9 @@ export default function SignUp() {
     event.stopPropagation();
     await signUpMutation({
       variables: {
-        input: {
-          ...values //funcionara? sino hay que ir variable por variable
-        }
+        input: values
       }
-    })
+    });
     history.push('/login');
   }
 
@@ -124,11 +117,11 @@ export default function SignUp() {
             <Grid item xs={12} sm={6}>
               <TextField
                 autoComplete="fname"
-                name="firstName"
+                name="firstname"
                 variant="outlined"
                 required
                 fullWidth
-                id="firstName"
+                id="firstname"
                 label="Nombre"
                 onChange={handleChange}
                 autoFocus
@@ -139,9 +132,9 @@ export default function SignUp() {
                 variant="outlined"
                 required
                 fullWidth
-                id="lastName"
+                id="lastname"
                 label="Apellido"
-                name="lastName"
+                name="lastname"
                 onChange={handleChange}
                 autoComplete="lname"
               />

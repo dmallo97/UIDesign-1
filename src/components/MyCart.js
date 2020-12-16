@@ -3,7 +3,7 @@ import MUIDataTable from "mui-datatables";
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import logo from "../lizard.jpg";
-import { gql, useMutation } from '@apollo/client';
+import { gql, useMutation, useQuery } from '@apollo/client';
 
 const columns = [
     {
@@ -24,7 +24,7 @@ const columns = [
     },
     {
         name: 'quantity',
-        label: 'Cantidad',
+        label: 'Cantidad en stock',
         options: {
             filter: false,
             sort: true,
@@ -95,19 +95,55 @@ const PROCESS_ORDER_MUTATION = gql`
   }
 `;
 
+const REMOVE_PROD_FROM_CART_MUTATION = gql`
+  mutation RemoveProductFromCart($input: CartInput!){
+    removeProductFromCart(input: $input){
+      userId
+      products {
+            id
+            title
+            size
+            quantity
+            productImage
+      }
+    }
+  }
+`;
+
+const CART_QUERY = gql`
+  query ShoppingCart{
+    shoppingCart{
+        userId
+        products {
+            id
+            title
+            size
+            quantity
+            productImage
+        }
+    }
+  }
+`;
+
 const MyCart = () => {
     const classes = useStyles();
-    
-    const [products, setProducts] = React.useState({
-        products: []
-    });
-
     const [processOrderMutation] = useMutation(PROCESS_ORDER_MUTATION);
+    const [removeProductFromCartMutation] = useMutation(REMOVE_PROD_FROM_CART_MUTATION);
+    //const [cartQuery] = useQuery(CART_QUERY);
+
+    const { data } = useQuery(CART_QUERY);
+    const [products, setProducts] = React.useState({
+        products: data.shoppingCart.products
+    });
 
     const processOrder = async () => {
         const { outputCart } = await processOrderMutation();
-        setProducts({products: []}); //cualquiera? Hay que buscar una manera de setear los productos que te devuelve el procesar orden. O para que sirve que te retorne algo? Tambien se podria setear un array vacio si igual se vaciaria
+        setProducts(outputCart.shoppingCart.products); 
     };
+
+    const onRemoveProductClick = async(event) => {
+        //Falta implementacion
+    }
 
     return (
         <>
@@ -118,7 +154,7 @@ const MyCart = () => {
                 options={options}
             /> {/* components={components} */}
             <div className={classes.container}>
-                <Button className={classes.button} variant="contained" color="primary" onClick={processOrder()}>Recibir</Button>
+                <Button className={classes.button} variant="contained" color="primary" onClick={processOrder}>Recibir</Button>
             </div>
         </>
     )

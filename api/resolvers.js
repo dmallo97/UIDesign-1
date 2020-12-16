@@ -28,11 +28,11 @@ const shoppingCartResolver = async (root, args, ctx, info) => {
 
 const signInResolver = async (
     root,
-    { input: { username, password } },
+    { input: { email, password } },
     ctx,
     info
 ) => {
-    const user = await User.findOne({ username });
+    const user = await User.findOne({ email });
     if (user && Bcrypt.compareSync(password, user.password || "")) {
         return user;
     }
@@ -40,21 +40,20 @@ const signInResolver = async (
 
 const signUpResolver = async (
     root,
-    { input: { username, password, firstname, lastname, email, dni, country, city } }, //falta agregar imagen, si no sabemos la pelamos
+    { input: { password, firstname, lastname, email, ci, country, city } }, //falta agregar imagen, si no sabemos la pelamos
     ctx,
     info
 ) => {
-    const currentUser = await User.findOne({ username });
+    const currentUser = await User.findOne({ email });
     if (currentUser) {
         throw new Error("UsernameAlreadyInUse");
     }
     const user = new User({
-        username,
         password: Bcrypt.hashSync(password, 10),
         firstname,
         lastname,
         email,
-        dni,
+        dni: ci,
         country,
         city
     });
@@ -87,7 +86,14 @@ const removeProductResolver = async (
     ctx,
     info
 ) => {
+    const userId = ctx.user._id;
+    const user = await User.findById(userId);
     const product = await Product.findById(productId);
+    var included = user.products.includes(product);
+
+    if(!included) {
+        throw new Error("No puedes eliminar una prenda que no sea tuya.");
+    }
 
     await product.remove();
     return product.toJSON();
@@ -95,7 +101,7 @@ const removeProductResolver = async (
 
 const updateUserResolver = async (
     root,
-    { input: { username, password, firstname, lastname, email, country, city } }, //falta profileImage
+    { input: { username, password, firstname, lastname, email, country, city, profileImage } }, 
     ctx,
     info
 ) => {
@@ -109,6 +115,7 @@ const updateUserResolver = async (
     user.email = email;
     user.country = country;
     user.city = city;
+    user.profileImage = profileImage;
 
     await user.save();
     return user.toJSON();

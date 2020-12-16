@@ -22,7 +22,7 @@ const UPDATE_USER_MUTATION = gql`
       country
       email
       dni
-      password
+      profileImage
     }
   }
 `;
@@ -57,10 +57,10 @@ const cities = [
 const ProfileDetails = ({ user, setUser }) => {
   const [updateUserMutation] = useMutation(UPDATE_USER_MUTATION);
   const [values, setValues] = useState({
-    firstName: user.firstName,
-    lastName: user.lastName,
+    firstname: user.firstname,
+    lastname: user.lastname,
     email: user.email,
-    ci: user.ci,
+    ci: user.dni,
     city: user.city,
     country: user.country
   });
@@ -75,14 +75,11 @@ const ProfileDetails = ({ user, setUser }) => {
   const handleClick = async (event) => {
     event.preventDefault();
     event.stopPropagation();
-    /*setUser({
-      ...values,
-    });*/
     const firstname = values.firstName;
     const lastname = values.lastName;
     const email = values.email;
     const city = values.city;
-    const { data } = await updateUserMutation({ //que hago con el resultado?
+    const { data } = await updateUserMutation({
       variables: {
         input: {
           firstname,
@@ -92,7 +89,7 @@ const ProfileDetails = ({ user, setUser }) => {
         }
       }
     });
-    setUser({ data });
+    setUser(data.updateUser);
   }
 
   return (
@@ -120,10 +117,10 @@ const ProfileDetails = ({ user, setUser }) => {
               <TextField
                 fullWidth
                 label="Nombre"
-                name="firstName"
+                name="firstname"
                 onChange={handleChange}
                 required
-                value={values.firstName}
+                value={values.firstname}
                 variant="outlined"
               />
             </Grid>
@@ -135,10 +132,10 @@ const ProfileDetails = ({ user, setUser }) => {
               <TextField
                 fullWidth
                 label="Apellido"
-                name="lastName"
+                name="lastname"
                 onChange={handleChange}
                 required
-                value={values.lastName}
+                value={values.lastname}
                 variant="outlined"
               />
             </Grid>
