@@ -50,17 +50,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const user = { //habria que borrar esto
-  firstName: 'Cholo',
-  lastName: 'Simeone',
-  avatar: 'https://i0.wp.com/thesefootballtimes.co/wp-content/uploads/2018/10/simeone.png?fit=1781%2C1289&ssl=1',
-  city: 'Montevideo',
-  country: 'Uruguay',
-  email: 'cholo@simeone.com',
-  ci: '5.112.546-3',
-  password: '1234'
-};
-
 export default function SignIn({ setUser }) {
   const [signInMutation] = useMutation(LOGIN_MUTATION);
   const classes = useStyles();

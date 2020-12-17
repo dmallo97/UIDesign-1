@@ -24,13 +24,13 @@ const UPLOAD_PRODUCT_MUTATION = gql`
   }
 `;
 
-const IMAGE_UPLOAD_MUTATION = gql`
+/*const IMAGE_UPLOAD_MUTATION = gql`
   mutation($file: Upload!) {
     uploadFile(file: $file) {
       success
     }
   }
-`;
+`;*/
 
 const productSizes = [
     {
@@ -174,7 +174,7 @@ const ProductUpload = () => {
             }
             event.preventDefault();
             event.stopPropagation();
-            const { data } = await uploadProductMutation({
+            await uploadProductMutation({
                 variables: {
                   input: {
                     title: productTitle,

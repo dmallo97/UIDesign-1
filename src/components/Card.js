@@ -37,7 +37,7 @@ const Card = ({ id, image, title, size, quantity }) => {
   let history = useHistory();
 
   const addToCart = async (event) => {
-    const { data } = await addToCartMutation({
+    await addToCartMutation({
       variables: {
         input: {
           productId: id
@@ -48,7 +48,7 @@ const Card = ({ id, image, title, size, quantity }) => {
   };
 
   const deleteProduct = async (event) => {
-    const { data } = await removeProductMutation({
+    await removeProductMutation({
       variables:{
         input:{
           productId: this.props.id

@@ -18,7 +18,6 @@ const PRODUCTS_QUERY = gql`
 
 const ProductsCatalog = () => {
   const { data , loading } = useQuery(PRODUCTS_QUERY);
-  const [products, setProducts] = React.useState([]);
   if(loading)
   {
     return "Aguarde un momento";
