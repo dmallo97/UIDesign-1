@@ -130,6 +130,9 @@ const addProductToCartResolver = async (
     ctx,
     info
 ) => {
+    console.log(ctx);
+    console.log(ctx.user);
+    console.log(ctx.user._id);
     const userId = ctx.user._id;
 
     let shoppingCart = await ShoppingCart.findOne({ userId });

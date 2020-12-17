@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import IconButton from '@material-ui/core/IconButton';
-import {AddShoppingCartIcon, DeleteIcon} from '@material-ui/icons/AddShoppingCart';
+import {AddShoppingCart, Delete} from '@material-ui/icons';
 import { gql, useMutation } from '@apollo/client';
 import {useHistory} from 'react-router-dom';
 
@@ -40,7 +40,7 @@ const Card = ({ id, image, title, size, quantity }) => {
     const { data } = await addToCartMutation({
       variables: {
         input: {
-          id
+          productId: id
         }
       }
     });
@@ -62,7 +62,6 @@ const Card = ({ id, image, title, size, quantity }) => {
     <Container src={image}>
       <Image src={image} />
       <BottomContainer>
-
         <InfoContainer>
           <TopDescription>
             <Title>{title}</Title>
@@ -73,10 +72,10 @@ const Card = ({ id, image, title, size, quantity }) => {
 
         <ButtonContainer>
           <IconButton color="primary" aria-label="add to shopping cart" onClick={addToCart}>
-            <AddShoppingCartIcon />
+            <AddShoppingCart />
           </IconButton>
-          <IconButton color="secondary" aria-label="delete product" onClick={deleteProduct}>
-            <DeleteIcon />
+          <IconButton color="primary" aria-label="delete product" onClick={deleteProduct}>
+            <Delete />
           </IconButton>
         </ButtonContainer>
 

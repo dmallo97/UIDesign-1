@@ -18,19 +18,19 @@ const PRODUCTS_QUERY = gql`
 
 const ProductsCatalog = () => {
   const { data , loading } = useQuery(PRODUCTS_QUERY);
-  const [products, setProducts] = React.useState({} = []);
+  const [products, setProducts] = React.useState([]);
   if(loading)
   {
     return "Aguarde un momento";
   }
-  if(data)
+  /*if(data)
   {
     setProducts(data.products);
-  }
+  }*/
   
   return (
     <Container>
-      {products.map(product => (
+      {data.products.map(product => (
         <Card
         id={product.id}
         image={logo}
