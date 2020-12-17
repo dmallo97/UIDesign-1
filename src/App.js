@@ -1,42 +1,49 @@
 import React from 'react';
 import './App.css';
 import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
-import Header from './Header';
-import SignIn from './SignIn';
-import SignUp from './SignUp';
-import Products from './Products';
+import Header from './components/Header';
+import SignIn from './components/SignIn';
+import SignUp from './components/SignUp';
+import Products from './ProductsCatalog';
 import MyCart from './components/MyCart';
 import Account from './components/Account';
 import styled from 'styled-components';
 import ProductUpload from './components/ProductUpload';
+import { ApolloProvider } from "@apollo/client";
+import { AuthProvider } from "./AuthProvider";
+import client from "./apollo";
 
 function App() {
   const [user, setUser] = React.useState();
 
   return (
-    <Router>
-      <Header user={user} setUser={setUser} />
-      <Container>
-        <Route path="/login">
-          <SignIn setUser={setUser} />
-        </Route>
-        <Route path="/signup">
-          <SignUp />
-        </Route>
-        <Route path="/products">
-          <Products />
-        </Route>
-        <Route path="/myCart">
-          <MyCart />
-        </Route>
-        <Route path="/productUpload">
-          <ProductUpload />
-        </Route>
-        <PrivateRoute user={user} path="/account">
-          <Account user={user} setUser={setUser} />
-        </PrivateRoute>
-      </Container>
-    </Router>
+    <AuthProvider>
+      <ApolloProvider client={client}>
+        <Router>
+          <Header user={user} setUser={setUser} />
+          <Container>
+            <Route path="/login">
+              <SignIn setUser={setUser} />
+            </Route>
+            <Route path="/signup">
+              <SignUp />
+            </Route>
+            <Route path="/products">
+              <Products />
+            </Route>
+            <Route path="/myCart">
+              <MyCart />
+            </Route>
+            <Route path="/productUpload">
+              <ProductUpload />
+            </Route>
+            <PrivateRoute user={user} path="/account">
+              <Account user={user} setUser={setUser} />
+            </PrivateRoute>
+          </Container>
+        </Router>
+      </ApolloProvider>
+    </AuthProvider>
   );
 }
 

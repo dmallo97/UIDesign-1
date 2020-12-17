@@ -92,7 +92,7 @@ const Header = ({ user, setUser }) => {
           </ListItem> </>
           : <></>}
         {user ? <ListItem button key='Mi perfil' component={Link} to={'/account'}>
-          <ListItemIcon> <Avatar src={user.avatar}>CS</Avatar></ListItemIcon>
+          <ListItemIcon>{user.avatar ? <Avatar src={user.avatar}/> : <Avatar>?</Avatar>}</ListItemIcon>
           <ListItemText primary='Mi perfil' />
         </ListItem> :
           <ListItem button key='Ingresar' component={Link} to={'/login'}>

@@ -12,6 +12,23 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { Link, useHistory } from "react-router-dom";
+import { gql, useMutation } from '@apollo/client';
+
+const LOGIN_MUTATION = gql`
+  mutation Login($input: SignInInput!) {
+    signIn(input: $input) {
+      id
+      firstname
+      token
+      lastname
+      city
+      country
+      email
+      dni
+      profileImage
+    }
+  }
+`;
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -33,33 +50,25 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const user = {
-  firstName: 'Cholo',
-  lastName: 'Simeone',
-  avatar: 'https://i0.wp.com/thesefootballtimes.co/wp-content/uploads/2018/10/simeone.png?fit=1781%2C1289&ssl=1',
-  city: 'Montevideo',
-  country: 'Uruguay',
-  email: 'cholo@simeone.com',
-  ci: '5.112.546-3',
-  password: '1234'
-};
-
-export default function SignIn({setUser}) {
+export default function SignIn({ setUser }) {
+  const [signInMutation] = useMutation(LOGIN_MUTATION);
   const classes = useStyles();
   const history = useHistory();
   const [values, setValues] = React.useState({
-    email: 'cholo@simeone.com',
-    password: '1234'
+    email: '',
+    password: ''
   });
 
-  const handleClick = (event) => {
+  const handleClick = async (event) => {
     event.preventDefault();
-    event.stopPropagation();  
-    if(user.email === values.email && values.password  === user.password)
-    {
-      setUser(user);
-      history.push('/account');
-    } 
+    event.stopPropagation();
+    const { data } = await signInMutation({
+      variables: {
+        input: values
+      }
+    });
+    setUser(data.signIn);
+    history.push('/account');
   }
 
   return (

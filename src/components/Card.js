@@ -1,28 +1,88 @@
 import React from "react";
 import styled from "styled-components";
-import Fab from '@material-ui/core/Fab';
-import AddIcon from '@material-ui/icons/Add';
+import IconButton from '@material-ui/core/IconButton';
+import {AddShoppingCart, Delete} from '@material-ui/icons';
+import { gql, useMutation } from '@apollo/client';
+import {useHistory} from 'react-router-dom';
 
-const Card = ({ image, title, size, quantity }) => (
-  <Container src={image}>
-    <Image src={image} />
-    <BottomContainer>
+const ADD_TO_CART_MUTATION = gql`
+  mutation AddToCart($input: CartInput!) {
+    addProductToCart(input: $input) {
+      userId
+      products{
+        id
+      }
+    }
+  }
+`;
 
-      <InfoContainer>
-        <TopDescription>
-          <Title>{title}</Title>
-          <SizeDescription>Talle {size}</SizeDescription>
-        </TopDescription>
-        <Quantity>Cantidad: {quantity}</Quantity>
-      </InfoContainer>
+const REMOVE_PRODUCT_MUTATION = gql`
+  mutation RemoveProduct($input: RemoveProductInput!) {
+    removeProduct(input: $input) {
+      userId
+      products{
+        id
+        title
+        size
+        quantity
+        productImage
+      }
+    }
+  }
+`;
 
-      <ButtonContainer>
-        <Fab size="small" ><AddIcon /></Fab>
-      </ButtonContainer>
+const Card = ({ id, image, title, size, quantity }) => {
+  const [addToCartMutation] = useMutation(ADD_TO_CART_MUTATION);
+  const [removeProductMutation] = useMutation(REMOVE_PRODUCT_MUTATION);
+  let history = useHistory();
 
-    </BottomContainer>
-  </Container>
-);
+  const addToCart = async (event) => {
+    await addToCartMutation({
+      variables: {
+        input: {
+          productId: id
+        }
+      }
+    });
+    history.push('/myCart');
+  };
+
+  const deleteProduct = async (event) => {
+    await removeProductMutation({
+      variables:{
+        input:{
+          productId: this.props.id
+        }
+      }
+    });
+    //redireccionar? refrescar?
+  }
+
+  return (
+    <Container src={image}>
+      <Image src={image} />
+      <BottomContainer>
+        <InfoContainer>
+          <TopDescription>
+            <Title>{title}</Title>
+            <SizeDescription>Talle {size}</SizeDescription>
+          </TopDescription>
+          <Quantity>Cantidad: {quantity}</Quantity>
+        </InfoContainer>
+
+        <ButtonContainer>
+          <IconButton color="primary" aria-label="add to shopping cart" onClick={addToCart}>
+            <AddShoppingCart />
+          </IconButton>
+          <IconButton color="primary" aria-label="delete product" onClick={deleteProduct}>
+            <Delete />
+          </IconButton>
+        </ButtonContainer>
+
+      </BottomContainer>
+    </Container>
+  );
+}
 
 const Container = styled.div`
   width: 100%;

@@ -9,6 +9,23 @@ import {
   Grid,
   TextField
 } from '@material-ui/core';
+import { gql, useMutation } from '@apollo/client';
+
+const UPDATE_USER_MUTATION = gql`
+  mutation UpdateUser($input: UserInput!) {
+    updateUser(input: $input) {
+      id
+      firstname
+      token
+      lastname
+      city
+      country
+      email
+      dni
+      profileImage
+    }
+  }
+`;
 
 const cities = [
   {
@@ -22,15 +39,28 @@ const cities = [
   {
     value: 'ciudad-de-la-costa',
     label: 'Ciudad de la Costa'
+  },
+  {
+    value: 'punta-del-este',
+    label: 'Punta del Este'
+  },
+  {
+    value: 'colonia-del-sacramento',
+    label: 'Colonia del Sacramento'
+  },
+  {
+    value: 'rivera',
+    label: 'Rivera'
   }
 ];
 
 const ProfileDetails = ({ user, setUser }) => {
+  const [updateUserMutation] = useMutation(UPDATE_USER_MUTATION);
   const [values, setValues] = useState({
-    firstName: user.firstName,
-    lastName: user.lastName,
+    firstname: user.firstname,
+    lastname: user.lastname,
     email: user.email,
-    ci: user.ci,
+    ci: user.dni,
     city: user.city,
     country: user.country
   });
@@ -42,10 +72,24 @@ const ProfileDetails = ({ user, setUser }) => {
     });
   };
 
-  const handleClick = (event) => {
-    setUser({
-      ...values,
-    })
+  const handleClick = async (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    const firstname = values.firstName;
+    const lastname = values.lastName;
+    const email = values.email;
+    const city = values.city;
+    const { data } = await updateUserMutation({
+      variables: {
+        input: {
+          firstname,
+          lastname,
+          email,
+          city
+        }
+      }
+    });
+    setUser(data.updateUser);
   }
 
   return (
@@ -73,10 +117,10 @@ const ProfileDetails = ({ user, setUser }) => {
               <TextField
                 fullWidth
                 label="Nombre"
-                name="firstName"
+                name="firstname"
                 onChange={handleChange}
                 required
-                value={values.firstName}
+                value={values.firstname}
                 variant="outlined"
               />
             </Grid>
@@ -88,10 +132,10 @@ const ProfileDetails = ({ user, setUser }) => {
               <TextField
                 fullWidth
                 label="Apellido"
-                name="lastName"
+                name="lastname"
                 onChange={handleChange}
                 required
-                value={values.lastName}
+                value={values.lastname}
                 variant="outlined"
               />
             </Grid>
@@ -138,7 +182,7 @@ const ProfileDetails = ({ user, setUser }) => {
                 label="País"
                 name="country"
                 onChange={handleChange}
-                required
+                disabled
                 value={values.country}
                 variant="outlined"
               />
@@ -156,7 +200,7 @@ const ProfileDetails = ({ user, setUser }) => {
                 required
                 select
                 SelectProps={{ native: true }}
-                value={values.state}
+                value={values.city}
                 variant="outlined"
               >
                 {cities.map((option) => (
