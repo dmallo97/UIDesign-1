@@ -133,7 +133,7 @@ const ProductUpload = () => {
     let history = useHistory();
     const [productSize, setSize] = React.useState('M');
     const [productTitle, setTitle] = React.useState("Sin definir");
-    const [productQuantity, setQuantity] = React.useState(1);
+    const [productQuantity, setQuantity] = React.useState();
     const [productImage, setProductImage] = React.useState({
         preview: "",
         raw:""
@@ -149,8 +149,9 @@ const ProductUpload = () => {
         setTitle(event.target.value);
     }
 
-    const handleQuantityChange = (event) => {
-        setQuantity(event.target.value);
+    const handleQuantityChange = (event, value) => {
+        const val = Number(value);
+        setQuantity(val);
     }
 
     const handleImageChange = async (event) => {
@@ -180,7 +181,7 @@ const ProductUpload = () => {
                     title: productTitle,
                     size: productSize,
                     quantity: productQuantity,
-                    productImage: productImage
+                    productImage: productImage.raw
                   }
                 }
               });

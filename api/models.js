@@ -24,6 +24,7 @@ const User = mongoose.model("User", {
     dni: String,
     country: String,
     city: String,
+    contributions: Number,
     profileImage: String
 });
 

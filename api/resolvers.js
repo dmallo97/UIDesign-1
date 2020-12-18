@@ -10,6 +10,11 @@ const userResolver = async (root, args, ctx, info) => {
     return user;
 }
 
+const usersResolver = async (root, args, ctx, info) => {
+    const users = await User.find();
+    return users;
+}
+
 const productResolver = async (root, { id }, ctx, info) => {
     const product = await Product.findById(id);
     return product;
@@ -55,6 +60,7 @@ const signUpResolver = async (
         email,
         dni: ci,
         country,
+        contributions: 0,
         city
     });
     await user.save();
@@ -70,12 +76,16 @@ const uploadProductResolver = async (
     if (title.length === 0) {
         throw new Error("Debe ingresar un título.");
     }
+    const userId = ctx.user._id;
+    const user = await User.findById(userId);
     const newProduct = new Product({
         title,
         size,
         quantity,
         productImage
     });
+    user.contributions++;
+    await user.save();
     await newProduct.save();
     return newProduct.toJSON();
 };
@@ -204,6 +214,7 @@ const processOrderResolver = async (root, args, ctx, info) => {
 export const resolvers = {
     Query: {
         products: productsResolver,
+        users: usersResolver,
         product: productResolver,
         user: userResolver,
         shoppingCart: shoppingCartResolver

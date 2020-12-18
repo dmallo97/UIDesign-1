@@ -48,10 +48,12 @@ const Card = ({ id, image, title, size, quantity }) => {
   };
 
   const deleteProduct = async (event) => {
+    const prodId = id;
+    console.log("Prod id: "+prodId);
     await removeProductMutation({
       variables:{
         input:{
-          productId: this.props.id
+          productId: prodId
         }
       }
     });

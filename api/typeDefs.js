@@ -12,6 +12,7 @@ const typeDefs = gql`
         country: String
         city: String
         profileImage: String
+        contributions: Int
         products: [Product]
     }
 
@@ -43,6 +44,7 @@ const typeDefs = gql`
         products: [Product]!
         product(id: ID!): Product
         user: User
+        users: [User]!
         shoppingCart: ShoppingCart
     }
 
