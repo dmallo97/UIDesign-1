@@ -44,27 +44,27 @@ const useStyles = makeStyles((theme) => ({
 
 const cities = [
   {
-    value: 'montevideo',
+    value: 'Montevideo',
     label: 'Montevideo'
   },
   {
-    value: 'las-piedras',
+    value: 'Las Piedras',
     label: 'Las Piedras'
   },
   {
-    value: 'ciudad-de-la-costa',
+    value: 'Ciudad de la Costa',
     label: 'Ciudad de la Costa'
   },
   {
-    value: 'punta-del-este',
+    value: 'Punta del Este',
     label: 'Punta del Este'
   },
   {
-    value: 'colonia-del-sacramento',
+    value: 'Colonia del Sacramento',
     label: 'Colonia del Sacramento'
   },
   {
-    value: 'rivera',
+    value: 'Rivera',
     label: 'Rivera'
   }
 ];

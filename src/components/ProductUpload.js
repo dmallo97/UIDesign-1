@@ -133,7 +133,7 @@ const ProductUpload = ({user}) => {
     let history = useHistory();
     const [productSize, setSize] = React.useState('M');
     const [productTitle, setTitle] = React.useState("Sin definir");
-    const [productQuantity, setQuantity] = React.useState();
+    const [productQuantity, setQuantity] = React.useState(1);
     const [productImage, setProductImage] = React.useState({
         preview: "",
         raw:""

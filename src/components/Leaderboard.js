@@ -37,8 +37,8 @@ const columns = [
         name: 'contributions',
         label: 'Cantidad de donaciones',
         options: {
-            filter: true,
-            sort: true,
+            filter: false,
+            sort: false,
         }
     },
     {
@@ -60,14 +60,18 @@ const columns = [
 ];
 
 const options = {
-    filterType: "dropdown",
-    //filterType: "checkbox",
+    filterType: "checkbox",
     download: "false",
     print: "false",
     viewColumns: "false",
     responsive: "simple",
-    selectableRows: "false",
+    selectableRows: 'none',
     count: 10,
+    sortOrder: {
+        name: 'contributions',
+        direction: 'desc'
+    },
+    pagination: false,
 };
 
 const useStyles = makeStyles((theme) => ({
@@ -76,11 +80,14 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: theme.palette.background.paper,
       padding: theme.spacing(1),
     },
-  }));
+}));
 
 
 const Leaderboard = () => {
-    const { data , loading } = useQuery(USERS_QUERY);
+    const { data , loading, refetch } = useQuery(USERS_QUERY);
+    React.useEffect(() => {
+        refetch();
+    }, [refetch]);
     const classes = useStyles();
     return (
         <Container maxWidth="md">

@@ -57,6 +57,7 @@ const typeDefs = gql`
         country: String
         city: String
         ci: String
+        userId: ID
         profileImage: String
     }
 

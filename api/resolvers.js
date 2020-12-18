@@ -7,6 +7,7 @@ const { generateToken } = require("./auth");
 const userResolver = async (root, args, ctx, info) => {
     const userId = ctx.user._id;
     const user = await User.findById(userId);
+    console.log('User resolver: '+user);
     return user;
 }
 
@@ -83,7 +84,7 @@ const uploadProductResolver = async (
         quantity,
         productImage
     });
-    user.contributions++;
+    user.contributions+= quantity;
     await user.save();
     await newProduct.save();
     return newProduct.toJSON();
@@ -110,21 +111,22 @@ const removeProductResolver = async (
 
 const updateUserResolver = async (
     root,
-    { input: { username, password, firstname, lastname, email, country, city, profileImage } }, 
+    { input: { password, firstname, lastname, email, city, profileImage, userId, country } }, 
     ctx,
     info
 ) => {
-    const userId = ctx.user._id;
+    console.log(userId);
     const user = await User.findById(userId);
-
-    user.username = username;
-    user.password = Bcrypt.hashSync(password, 10);
+    if(password)
+    {
+        user.password = Bcrypt.hashSync(password, 10);
+    }
     user.firstname = firstname;
     user.lastname = lastname;
     user.email = email;
     user.country = country;
     user.city = city;
-    user.profileImage = profileImage;
+    //user.profileImage = profileImage;
 
     await user.save();
     return user.toJSON();
@@ -239,8 +241,9 @@ export const resolvers = {
             //   sameSite: "None"
             // });
             return token;
-        }
-
+        },
+        firstname: user => user.firstname,
+        lastname: user => user.lastname
         /*
            favorites: async user => {
                // Return favorite pokemons
