@@ -39,7 +39,7 @@ function App() {
               <MyCart />
             </Route>
             <Route path="/productUpload">
-              <ProductUpload />
+              <ProductUpload user={user}/>
             </Route>
             <PrivateRoute user={user} path="/account">
               <Account user={user} setUser={setUser} />

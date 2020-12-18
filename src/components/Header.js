@@ -86,7 +86,7 @@ const Header = ({ user, setUser }) => {
             <ListItemIcon> <PublishIcon /></ListItemIcon>
             <ListItemText primary='Subir prendas' />
           </ListItem>
-          <ListItem button key='Clasificación' component={Link} to={'/leaderboard'}>
+          <ListItem button key='clasificacion' component={Link} to={'/leaderboard'}>
             <ListItemIcon><EmojiEventsIcon /></ListItemIcon>
             <ListItemText primary='Nuestros héroes' />
           </ListItem>

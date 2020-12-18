@@ -69,14 +69,13 @@ const signUpResolver = async (
 
 const uploadProductResolver = async (
     root,
-    { input: { title, size, quantity, productImage } },
+    { input: { title, size, quantity, productImage, userId } },
     ctx,
     info
 ) => {
     if (title.length === 0) {
         throw new Error("Debe ingresar un título.");
     }
-    const userId = ctx.user._id;
     const user = await User.findById(userId);
     const newProduct = new Product({
         title,

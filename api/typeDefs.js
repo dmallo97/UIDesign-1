@@ -21,6 +21,7 @@ const typeDefs = gql`
         size: String!
         quantity: Int!
         productImage: String
+        userId: ID
     }
 
     input RemoveProductInput {

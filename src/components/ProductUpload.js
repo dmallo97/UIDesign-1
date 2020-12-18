@@ -128,7 +128,7 @@ const toBase64 = file => new Promise((resolve, reject) => {
     reader.onerror = error => reject(error);
 });
 
-const ProductUpload = () => {
+const ProductUpload = ({user}) => {
     const classes = useStyles();
     let history = useHistory();
     const [productSize, setSize] = React.useState('M');
@@ -175,13 +175,15 @@ const ProductUpload = () => {
             }
             event.preventDefault();
             event.stopPropagation();
+            console.log(productQuantity);
             await uploadProductMutation({
                 variables: {
                   input: {
                     title: productTitle,
                     size: productSize,
                     quantity: productQuantity,
-                    productImage: productImage.raw
+                    productImage: productImage.raw,
+                    userId: user.id
                   }
                 }
               });
@@ -262,7 +264,7 @@ const ProductUpload = () => {
             </form>
             <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
                 <Alert onClose={handleClose} severity="success">
-                    Prenda subida correctamente!
+                    Prenda subida correctamente! Gracias por tu contribución, sumaste 1 punto!
                 </Alert>
             </Snackbar>
         </Container>

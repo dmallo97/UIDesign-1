@@ -68,6 +68,7 @@ export default function SignIn({ setUser }) {
       }
     });
     setUser(data.signIn);
+    console.log(data.signIn);
     history.push('/account');
   }
 

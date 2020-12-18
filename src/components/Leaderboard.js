@@ -2,7 +2,7 @@ import React from 'react';
 import MUIDataTable from "mui-datatables";
 import { makeStyles } from '@material-ui/core/styles';
 import { gql, useQuery } from '@apollo/client';
-import { Typography } from '@material-ui/core';
+import { Typography, Divider, Container } from '@material-ui/core';
 
 const USERS_QUERY = gql`
     query Users{
@@ -10,18 +10,27 @@ const USERS_QUERY = gql`
             firstname
             lastname
             contributions
+            city
             country
         }
     }
-}`;
+`;
 
 const columns = [
     {
-        name: 'title',
+        name: 'firstname',
         label: 'Nombre',
         options: {
             filter: false,
-            sort: true,
+            sort: false,
+        }
+    },
+    {
+        name: 'lastname',
+        label: 'Apellido',
+        options: {
+            filter: false,
+            sort: false,
         }
     },
     {
@@ -33,22 +42,31 @@ const columns = [
         }
     },
     {
-        name: 'country',
-        label: 'Pais',
+        name: 'city',
+        label: 'Ciudad',
         options: {
             filter: true,
-            sort: true,
+            sort: false,
+        }
+    },
+    {
+        name: 'country',
+        label: 'País',
+        options: {
+            filter: false,
+            sort: false,
         }
     },
 ];
 
 const options = {
-    /* filterType: "dropdown", */
-    filterType: "checkbox",
+    filterType: "dropdown",
+    //filterType: "checkbox",
     download: "false",
     print: "false",
     viewColumns: "false",
     responsive: "simple",
+    selectableRows: "false",
     count: 10,
 };
 
@@ -65,11 +83,12 @@ const Leaderboard = () => {
     const { data , loading } = useQuery(USERS_QUERY);
     const classes = useStyles();
     return (
-        <>
-            <Typography variant="h1">No todos los héroes llevan capa...</Typography>
-            <Typography variant="h3">Estos son los que más contribuyeron a la causa.</Typography>
+        <Container maxWidth="md">
+            <Typography variant="h3">No todos los héroes llevan capa...</Typography>
+            <Typography variant="h5">Estos son los que más contribuyeron a la causa.</Typography>
+            <br></br>
             <Divider />
-
+            <br></br>
             { loading ? <div className={classes.root}>{"Espera mientras cargamos los datos"}</div> : (
             <>
                 <MUIDataTable
@@ -79,6 +98,8 @@ const Leaderboard = () => {
                     options={options}
                 /> 
             </>)}
-        </>
+        </Container>
     );
 }
+
+export default Leaderboard;
