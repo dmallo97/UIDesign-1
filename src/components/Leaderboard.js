@@ -49,6 +49,7 @@ const options = {
     print: "false",
     viewColumns: "false",
     responsive: "simple",
+    count: 10,
 };
 
 const useStyles = makeStyles((theme) => ({

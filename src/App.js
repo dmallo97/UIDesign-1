@@ -7,6 +7,7 @@ import SignUp from './components/SignUp';
 import Products from './ProductsCatalog';
 import MyCart from './components/MyCart';
 import Account from './components/Account';
+import Leaderboard from './components/Leaderboard';
 import styled from 'styled-components';
 import ProductUpload from './components/ProductUpload';
 import { ApolloProvider } from "@apollo/client";
@@ -30,6 +31,9 @@ function App() {
             </Route>
             <Route path="/products">
               <Products />
+            </Route>
+            <Route path="/leaderboard">
+              <Leaderboard />
             </Route>
             <Route path="/myCart">
               <MyCart />
