@@ -96,14 +96,14 @@ const removeProductResolver = async (
     ctx,
     info
 ) => {
-    const userId = ctx.user._id;
-    const user = await User.findById(userId);
+    //const userId = ctx.user._id;
+    //const user = await User.findById(userId);
     const product = await Product.findById(productId);
-    var included = user.products.includes(product);
+    /*var included = user.products.includes(product);
 
     if(!included) {
         throw new Error("No puedes eliminar una prenda que no sea tuya.");
-    }
+    }*/
 
     await product.remove();
     return product.toJSON();

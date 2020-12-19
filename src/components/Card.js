@@ -17,16 +17,11 @@ const ADD_TO_CART_MUTATION = gql`
 `;
 
 const REMOVE_PRODUCT_MUTATION = gql`
-  mutation RemoveProduct($input: RemoveProductInput!) {
-    removeProduct(input: $input) {
-      userId
-      products{
-        id
-        title
-        size
-        quantity
-        productImage
-      }
+mutation RemoveProduct($input: RemoveProductInput!) {
+  removeProduct(input: $input) {
+      id
+      title
+      size
     }
   }
 `;
@@ -57,7 +52,6 @@ const Card = ({ id, image, title, size, quantity }) => {
         }
       }
     });
-    //redireccionar? refrescar?
   }
 
   return (

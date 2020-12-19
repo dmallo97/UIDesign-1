@@ -139,6 +139,7 @@ const ProductUpload = ({user}) => {
         raw:""
     });
     const [open, setOpen] = React.useState(false);
+    const [openImageUploaded, setOpenImageUploaded] = React.useState(false);
     const [uploadProductMutation] = useMutation(UPLOAD_PRODUCT_MUTATION);
 
     const handleSizeChange = (event) => {
@@ -157,13 +158,15 @@ const ProductUpload = ({user}) => {
     const handleImageChange = async (event) => {
         if(event.target.files.length){
             const file = event.target.files[0];
+            console.log(file);
             const result = await toBase64(file).catch(e => Error(e));
+            console.log(result);
             setProductImage({
-                preview: URL.createObjectURL(event.target.files[0]),
                 raw: result
             });
         }
         console.log("Imagen seleccionada: "+ productImage.raw);
+        setOpenImageUploaded(true);
     }
 
     const handleClick = async (event) => {
@@ -199,6 +202,14 @@ const ProductUpload = ({user}) => {
         }
 
         setOpen(false);
+    };
+
+    const handleCloseImageNotification = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setOpenImageUploaded(false);
     };
 
     return (
@@ -258,13 +269,19 @@ const ProductUpload = ({user}) => {
                 </Button>
                 </label>
 
+                <Snackbar open={openImageUploaded} autoHideDuration={5000} onClose={handleCloseImageNotification}>
+                    <Alert onClose={handleCloseImageNotification} severity="info">
+                        Imagen cargada.
+                    </Alert>
+                </Snackbar>
+
                 <Button type="submit" className={classes.donateButton} variant="contained" color="primary">Donar</Button>
 
                 { }
             </form>
             <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
                 <Alert onClose={handleClose} severity="success">
-                    Prenda subida correctamente! Gracias por tu contribución, sumaste 1 punto!
+                    Prenda subida correctamente! Gracias por tu contribución, sumaste {productQuantity} punto/s!
                 </Alert>
             </Snackbar>
         </Container>

@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 import Card from "./components/Card";
-import logo from "./lizard.jpg";
 import { makeStyles } from '@material-ui/core/styles';
 import { gql, useQuery } from "@apollo/client";
 
@@ -31,22 +30,15 @@ const ProductsCatalog = () => {
     refetch();
   }, [refetch]);
   const classes = useStyles();
-  if(loading)
-  {
-    return "Aguarde un momento";
-  }
-  /*if(data)
-  {
-    setProducts(data.products);
-  }*/
   
   return (
     <Container>
       { loading ? <div className={classes.root}>{"Espera mientras cargamos los datos"}</div> : (<>
         {data.products.map(product => (
+          
           <Card
           id={product.id}
-          image={logo}
+          image={product.productImage}
           title={product.title}
           size={product.size}
           quantity={product.quantity}
