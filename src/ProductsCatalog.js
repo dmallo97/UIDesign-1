@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import Card from "./components/Card";
-import logo from "./lizard.jpg";
+import { makeStyles } from '@material-ui/core/styles';
 import { gql, useQuery } from "@apollo/client";
 
 const PRODUCTS_QUERY = gql`
@@ -16,28 +16,35 @@ const PRODUCTS_QUERY = gql`
   }
 `;
 
+const useStyles = makeStyles((theme) => ({
+  root: {
+    ...theme.typography.button,
+    backgroundColor: theme.palette.background.paper,
+    padding: theme.spacing(1),
+  },
+}));
+
 const ProductsCatalog = () => {
-  const { data , loading } = useQuery(PRODUCTS_QUERY);
-  if(loading)
-  {
-    return "Aguarde un momento";
-  }
-  /*if(data)
-  {
-    setProducts(data.products);
-  }*/
+  const { data , loading, refetch } = useQuery(PRODUCTS_QUERY);
+  React.useEffect(() => {
+    refetch();
+  }, [refetch]);
+  const classes = useStyles();
   
   return (
     <Container>
-      {data.products.map(product => (
-        <Card
-        id={product.id}
-        image={logo}
-        title={product.title}
-        size={product.size}
-        quantity={product.quantity}
-        />
-      ))}
+      { loading ? <div className={classes.root}>{"Espera mientras cargamos los datos"}</div> : (<>
+        {data.products.map(product => (
+          
+          <Card
+          id={product.id}
+          image={product.productImage}
+          title={product.title}
+          size={product.size}
+          quantity={product.quantity}
+          />
+        ))}
+      </>)}
     </Container>
   );
 }

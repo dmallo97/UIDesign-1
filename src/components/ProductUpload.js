@@ -128,7 +128,7 @@ const toBase64 = file => new Promise((resolve, reject) => {
     reader.onerror = error => reject(error);
 });
 
-const ProductUpload = () => {
+const ProductUpload = ({user}) => {
     const classes = useStyles();
     let history = useHistory();
     const [productSize, setSize] = React.useState('M');
@@ -139,6 +139,7 @@ const ProductUpload = () => {
         raw:""
     });
     const [open, setOpen] = React.useState(false);
+    const [openImageUploaded, setOpenImageUploaded] = React.useState(false);
     const [uploadProductMutation] = useMutation(UPLOAD_PRODUCT_MUTATION);
 
     const handleSizeChange = (event) => {
@@ -149,20 +150,23 @@ const ProductUpload = () => {
         setTitle(event.target.value);
     }
 
-    const handleQuantityChange = (event) => {
-        setQuantity(event.target.value);
+    const handleQuantityChange = (event, value) => {
+        const val = Number(value);
+        setQuantity(val);
     }
 
     const handleImageChange = async (event) => {
         if(event.target.files.length){
             const file = event.target.files[0];
+            console.log(file);
             const result = await toBase64(file).catch(e => Error(e));
+            console.log(result);
             setProductImage({
-                preview: URL.createObjectURL(event.target.files[0]),
                 raw: result
             });
         }
         console.log("Imagen seleccionada: "+ productImage.raw);
+        setOpenImageUploaded(true);
     }
 
     const handleClick = async (event) => {
@@ -174,13 +178,15 @@ const ProductUpload = () => {
             }
             event.preventDefault();
             event.stopPropagation();
+            console.log(productQuantity);
             await uploadProductMutation({
                 variables: {
                   input: {
                     title: productTitle,
                     size: productSize,
                     quantity: productQuantity,
-                    productImage: productImage
+                    productImage: productImage.raw,
+                    userId: user.id
                   }
                 }
               });
@@ -196,6 +202,14 @@ const ProductUpload = () => {
         }
 
         setOpen(false);
+    };
+
+    const handleCloseImageNotification = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setOpenImageUploaded(false);
     };
 
     return (
@@ -255,13 +269,19 @@ const ProductUpload = () => {
                 </Button>
                 </label>
 
+                <Snackbar open={openImageUploaded} autoHideDuration={5000} onClose={handleCloseImageNotification}>
+                    <Alert onClose={handleCloseImageNotification} severity="info">
+                        Imagen cargada.
+                    </Alert>
+                </Snackbar>
+
                 <Button type="submit" className={classes.donateButton} variant="contained" color="primary">Donar</Button>
 
                 { }
             </form>
             <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
                 <Alert onClose={handleClose} severity="success">
-                    Prenda subida correctamente!
+                    Prenda subida correctamente! Gracias por tu contribución, sumaste {productQuantity} punto/s!
                 </Alert>
             </Snackbar>
         </Container>

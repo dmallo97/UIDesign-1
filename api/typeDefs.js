@@ -12,6 +12,7 @@ const typeDefs = gql`
         country: String
         city: String
         profileImage: String
+        contributions: Int
         products: [Product]
     }
 
@@ -20,6 +21,7 @@ const typeDefs = gql`
         size: String!
         quantity: Int!
         productImage: String
+        userId: ID
     }
 
     input RemoveProductInput {
@@ -43,6 +45,7 @@ const typeDefs = gql`
         products: [Product]!
         product(id: ID!): Product
         user: User
+        users: [User]!
         shoppingCart: ShoppingCart
     }
 
@@ -54,6 +57,7 @@ const typeDefs = gql`
         country: String
         city: String
         ci: String
+        userId: ID
         profileImage: String
     }
 

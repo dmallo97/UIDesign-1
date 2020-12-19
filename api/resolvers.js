@@ -7,7 +7,13 @@ const { generateToken } = require("./auth");
 const userResolver = async (root, args, ctx, info) => {
     const userId = ctx.user._id;
     const user = await User.findById(userId);
+    console.log('User resolver: '+user);
     return user;
+}
+
+const usersResolver = async (root, args, ctx, info) => {
+    const users = await User.find();
+    return users;
 }
 
 const productResolver = async (root, { id }, ctx, info) => {
@@ -55,6 +61,7 @@ const signUpResolver = async (
         email,
         dni: ci,
         country,
+        contributions: 0,
         city
     });
     await user.save();
@@ -63,19 +70,22 @@ const signUpResolver = async (
 
 const uploadProductResolver = async (
     root,
-    { input: { title, size, quantity, productImage } },
+    { input: { title, size, quantity, productImage, userId } },
     ctx,
     info
 ) => {
     if (title.length === 0) {
         throw new Error("Debe ingresar un título.");
     }
+    const user = await User.findById(userId);
     const newProduct = new Product({
         title,
         size,
         quantity,
         productImage
     });
+    user.contributions+= quantity;
+    await user.save();
     await newProduct.save();
     return newProduct.toJSON();
 };
@@ -86,14 +96,14 @@ const removeProductResolver = async (
     ctx,
     info
 ) => {
-    const userId = ctx.user._id;
-    const user = await User.findById(userId);
+    //const userId = ctx.user._id;
+    //const user = await User.findById(userId);
     const product = await Product.findById(productId);
-    var included = user.products.includes(product);
+    /*var included = user.products.includes(product);
 
     if(!included) {
         throw new Error("No puedes eliminar una prenda que no sea tuya.");
-    }
+    }*/
 
     await product.remove();
     return product.toJSON();
@@ -101,21 +111,22 @@ const removeProductResolver = async (
 
 const updateUserResolver = async (
     root,
-    { input: { username, password, firstname, lastname, email, country, city, profileImage } }, 
+    { input: { password, firstname, lastname, email, city, profileImage, userId, country } }, 
     ctx,
     info
 ) => {
-    const userId = ctx.user._id;
+    console.log(userId);
     const user = await User.findById(userId);
-
-    user.username = username;
-    user.password = Bcrypt.hashSync(password, 10);
+    if(password)
+    {
+        user.password = Bcrypt.hashSync(password, 10);
+    }
     user.firstname = firstname;
     user.lastname = lastname;
     user.email = email;
     user.country = country;
     user.city = city;
-    user.profileImage = profileImage;
+    //user.profileImage = profileImage;
 
     await user.save();
     return user.toJSON();
@@ -204,6 +215,7 @@ const processOrderResolver = async (root, args, ctx, info) => {
 export const resolvers = {
     Query: {
         products: productsResolver,
+        users: usersResolver,
         product: productResolver,
         user: userResolver,
         shoppingCart: shoppingCartResolver
@@ -229,8 +241,9 @@ export const resolvers = {
             //   sameSite: "None"
             // });
             return token;
-        }
-
+        },
+        firstname: user => user.firstname,
+        lastname: user => user.lastname
         /*
            favorites: async user => {
                // Return favorite pokemons

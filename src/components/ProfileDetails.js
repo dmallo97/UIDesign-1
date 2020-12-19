@@ -29,27 +29,27 @@ const UPDATE_USER_MUTATION = gql`
 
 const cities = [
   {
-    value: 'montevideo',
+    value: 'Montevideo',
     label: 'Montevideo'
   },
   {
-    value: 'las-piedras',
+    value: 'Las Piedras',
     label: 'Las Piedras'
   },
   {
-    value: 'ciudad-de-la-costa',
+    value: 'Ciudad de la Costa',
     label: 'Ciudad de la Costa'
   },
   {
-    value: 'punta-del-este',
+    value: 'Punta del Este',
     label: 'Punta del Este'
   },
   {
-    value: 'colonia-del-sacramento',
+    value: 'Colonia del Sacramento',
     label: 'Colonia del Sacramento'
   },
   {
-    value: 'rivera',
+    value: 'Rivera',
     label: 'Rivera'
   }
 ];
@@ -75,20 +75,25 @@ const ProfileDetails = ({ user, setUser }) => {
   const handleClick = async (event) => {
     event.preventDefault();
     event.stopPropagation();
-    const firstname = values.firstName;
-    const lastname = values.lastName;
+    const firstname = values.firstname;
+    const lastname = values.lastname;
     const email = values.email;
     const city = values.city;
+    const country = values.country;
+    console.log(country);
     const { data } = await updateUserMutation({
       variables: {
         input: {
           firstname,
           lastname,
           email,
-          city
+          city,
+          country,
+          userId: user.id
         }
       }
     });
+    console.log(data.updateUser.firstname);
     setUser(data.updateUser);
   }
 

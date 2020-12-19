@@ -17,16 +17,11 @@ const ADD_TO_CART_MUTATION = gql`
 `;
 
 const REMOVE_PRODUCT_MUTATION = gql`
-  mutation RemoveProduct($input: RemoveProductInput!) {
-    removeProduct(input: $input) {
-      userId
-      products{
-        id
-        title
-        size
-        quantity
-        productImage
-      }
+mutation RemoveProduct($input: RemoveProductInput!) {
+  removeProduct(input: $input) {
+      id
+      title
+      size
     }
   }
 `;
@@ -48,14 +43,15 @@ const Card = ({ id, image, title, size, quantity }) => {
   };
 
   const deleteProduct = async (event) => {
+    const prodId = id;
+    console.log("Prod id: "+prodId);
     await removeProductMutation({
       variables:{
         input:{
-          productId: this.props.id
+          productId: prodId
         }
       }
     });
-    //redireccionar? refrescar?
   }
 
   return (

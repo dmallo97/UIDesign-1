@@ -9,7 +9,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import { Link, useHistory } from "react-router-dom";
 import Avatar from '@material-ui/core/Avatar';
-
+import EmojiEventsIcon from '@material-ui/icons/EmojiEvents';
 import clsx from 'clsx';
 import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
@@ -85,6 +85,10 @@ const Header = ({ user, setUser }) => {
           <ListItem button key='Subir prendas' component={Link} to={'/productUpload'}>
             <ListItemIcon> <PublishIcon /></ListItemIcon>
             <ListItemText primary='Subir prendas' />
+          </ListItem>
+          <ListItem button key='clasificacion' component={Link} to={'/leaderboard'}>
+            <ListItemIcon><EmojiEventsIcon /></ListItemIcon>
+            <ListItemText primary='Nuestros héroes' />
           </ListItem>
           <ListItem button key='Mi carrito' component={Link} to={'/myCart'}>
             <ListItemIcon><ShoppingCartIcon /></ListItemIcon>
